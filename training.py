@@ -6,7 +6,6 @@ from torchvision.utils import make_grid
 from torch.autograd import Variable
 from torch.autograd import grad as torch_grad
 
-#Add message
 
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
