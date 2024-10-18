@@ -147,7 +147,7 @@ class Trainer():
         self.plot_losses()
 
         if save_training_gif:
-            imageio.mimsave('../gifs/training_{}_epochs.gif'.format(epochs),
+            imageio.mimsave('./gifs/training_{}_epochs.gif'.format(epochs),
                              training_progress_images)
     def plot_losses(self):
         """Plot the losses recorded during training."""
