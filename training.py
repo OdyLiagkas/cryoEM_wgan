@@ -3,7 +3,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
-from tqdm.notebook import tqdm
 
 import matplotlib.pyplot as plt ##########################ADDED
 
@@ -106,7 +105,7 @@ class Trainer():
         return self.gp_weight * ((gradients_norm - 1) ** 2).mean()
 
     def _train_epoch(self, data_loader):
-        for i, data in tqdm(enumerate(data_loader)): #ADDED TQDM
+        for i, data in enumerate(data_loader): #ADDED TQDM
             self.num_steps += 1
             self._critic_train_iteration(data)                         ###############changed it from (data[0]) because it didn't catpure the batch dim
             # Only update generator every |critic_iterations| iterations
