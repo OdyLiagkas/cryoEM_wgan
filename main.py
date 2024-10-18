@@ -1,11 +1,29 @@
 import torch
 import torch.optim as optim
-from dataloaders import get_mnist_dataloaders, get_lsun_dataloader
+from dataloaders import CustomImageDataset, get_dataloader
 from models import Generator, Discriminator
 from training import Trainer
 
-data_loader, _ = get_mnist_dataloaders(batch_size=64)
-img_size = (32, 32, 1)
+#CONFIGURATIONS:
+###########################################################################################
+device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
+# image = image.to(device)
+
+batch_size = 64   # they have 64
+
+noise_dim = 100
+dim = 16 # don't know what this is yet. that's what they have
+
+# optimizer parameters:
+lr = 1e-4
+beta_1 = 0.2          #changed from 0.9 to .5 as is stated in the paper  
+beta_2 = 0.995        #changed from 0.99 to .9 as is stated in the paper
+
+img_size = (128,128,1)
+
+epochs = 30 ### on Github they say 200 for the MNIST set
+############################################################################################
+data_loader = get_dataloader(batch_size=batch_size)
 
 generator = Generator(img_size=img_size, latent_dim=100, dim=16)
 discriminator = Discriminator(img_size=img_size, dim=16)
