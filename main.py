@@ -25,25 +25,24 @@ epochs = 30 ### on Github they say 200 for the MNIST set
 ############################################################################################
 data_loader = get_dataloader(batch_size=batch_size)
 
-generator = Generator(img_size=img_size, latent_dim=100, dim=16)
-discriminator = Discriminator(img_size=img_size, dim=16)
+generator = Generator(img_size=img_size, latent_dim=noise_dim, dim=dim)
+discriminator = Discriminator(img_size=img_size, dim=dim)
 
 print(generator)
 print(discriminator)
 
 # Initialize optimizers
-lr = 1e-4
-betas = (.9, .99)
 G_optimizer = optim.Adam(generator.parameters(), lr=lr, betas=betas)
 D_optimizer = optim.Adam(discriminator.parameters(), lr=lr, betas=betas)
 
 # Train model
-epochs = 200
 trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer,
                   use_cuda=torch.cuda.is_available())
 trainer.train(data_loader, epochs, save_training_gif=True)
 
+'''
 # Save models
 name = 'mnist_model'
 torch.save(trainer.G.state_dict(), './gen_' + name + '.pt')
 torch.save(trainer.D.state_dict(), './dis_' + name + '.pt')
+'''
