@@ -143,7 +143,9 @@ class Trainer():
                 img_grid = (img_grid * 255).astype(np.uint8)
                 # Add image grid to training progress
                 training_progress_images.append(img_grid)
-                
+
+        print("Batch size is: ", batch_size)
+        print("Output size is: ", generated_data.size())
         self.plot_losses()
 
         if save_training_gif:
