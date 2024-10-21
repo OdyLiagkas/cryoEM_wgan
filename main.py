@@ -4,6 +4,7 @@ from dataloaders import CustomImageDataset, get_dataloader
 from models import Generator, Discriminator
 from training import Trainer
 import wandb
+import matplotlib.pyplot as plt
 
 #CONFIGURATIONS:
 ###########################################################################################
@@ -33,10 +34,13 @@ wandb.init(
 
     # track hyperparameters and run metadata
     config={
-    "learning_rate": lr,
     "architecture": "Wasserstein GAN",
-    "dataset": "Custom",
+    "batch_size": batch_size,
+    "learning_rate": lr,
+    "beta_1": beta_1,
+    "beta_2": beta_2,
     "epochs": epochs,
+    "dataset": "Custom",
     }
 )
 ###########################################################################################
@@ -56,7 +60,7 @@ D_optimizer = optim.Adam(discriminator.parameters(), lr=lr, betas=betas)
 # Train model
 trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer,
                   use_cuda=torch.cuda.is_available())
-trainer.train(data_loader, epochs, save_training_gif=True)
+trainer.train(data_loader, epochs, save_training_gif=False)
 
 '''
 # Save models
@@ -64,4 +68,23 @@ name = 'mnist_model'
 torch.save(trainer.G.state_dict(), './gen_' + name + '.pt')
 torch.save(trainer.D.state_dict(), './dis_' + name + '.pt')
 '''
+
+generated_image = generator(noise_dim)
+print(generated_image.shape)
+
+# Create a figure
+fig, ax = plt.subplots()
+
+# Display the generated image
+ax.imshow(generated_image[0].detach().permute(1, 2, 0).cpu().numpy(), cmap='gray')
+
+# Optionally show axes
+ax.axis('on') 
+
+# Save the figure as an image and log it to W&B
+wandb.log({"Generated Image": wandb.Image(fig)})
+
+# Close the figure to free up memory
+plt.close(fig)
+
 wandb.finish()
