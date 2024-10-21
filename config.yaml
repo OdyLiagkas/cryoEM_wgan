@@ -4,7 +4,7 @@
 device: "cuda:0"  # If available, otherwise CPU will be used in the script
 
 # Training parameters
-batch_size: 64
+batch_size: 64   # Also needs to be changed in dataloader.py
 noise_dim: 100
 dim: 16  
 lr: 0.0001
