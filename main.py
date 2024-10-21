@@ -9,7 +9,7 @@ from training import Trainer
 device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
 # image = image.to(device)
 
-batch_size = 64   # they have 64
+batch_size = 128   # they have 64
 
 noise_dim = 100
 dim = 16 # don't know what this is yet. that's what they have
