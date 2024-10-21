@@ -214,7 +214,8 @@ class Trainer():
 
         if(sampling==True):
             generated_data = generated_data.detach()
-            return generated_data.cpu().numpy()[:, 0, :, :]
+            generated_image.squeeze()
+            return generated_data.cpu().numpy()
         
         # Remove color channel
         return generated_data.cpu().numpy()[:, 0, :, :]
