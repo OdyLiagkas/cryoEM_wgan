@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
 # image = image.to(device)
 
-batch_size = 128   # they have 64
+batch_size = 64   # they have 64    ALSO NEEDS TO BE CHANGED IN DATALOADER
 
 noise_dim = 100
 dim = 16 # don't know what this is yet. that's what they have
