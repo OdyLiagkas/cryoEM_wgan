@@ -63,6 +63,8 @@ def get_dataloader(path_to_data='../pngs/',
 
     particle_dset = particle_dset[0]
 
+    particle_dset = particle_dset.unsqueeze(0)
+                            
     # Create dataloader
     return DataLoader(particle_dset, batch_size=batch_size, shuffle=True)
 
