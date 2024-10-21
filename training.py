@@ -213,7 +213,7 @@ class Trainer():
         generated_data = self.sample_generator(num_samples)
 
         if(sampling==True):
-            return generated_data.cpu().detatch.numpy()[:, 0, :, :]
+            return generated_data.cpu().detach.numpy()[:, 0, :, :]
         
         # Remove color channel
         return generated_data.cpu().numpy()[:, 0, :, :]
