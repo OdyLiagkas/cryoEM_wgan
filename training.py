@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt ##########################ADDED
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=50,
-                 use_cuda=False):
+                 use_cuda=False, plot_every=1000):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
@@ -132,8 +132,27 @@ class Trainer():
                     log_dict["Generator Loss"] = self.losses['G'][-1]
 
                 wandb.log(log_dict)
+        
+            if i % self.plot_every == 0:
+                # Generate a sample of 1 image from the generator
+                num_samples = 1
+                generated_image = trainer.sample(num_samples=num_samples, sampling =True)
+                print(generated_image.shape)
 
+                # Create a figure
+                fig, ax = plt.subplots()
 
+                # Display the generated image
+                ax.imshow(generated_image, cmap='gray')
+
+                # Optionally show axes
+                ax.axis('on') 
+
+                # Save the figure as an image and log it to W&B
+                wandb.log({"Generated Image": wandb.Image(fig)})
+
+                # Close the figure to free up memory
+                plt.close(fig)
     
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
@@ -158,49 +177,10 @@ class Trainer():
                 # Add image grid to training progress
                 training_progress_images.append(img_grid)
 
-        self.plot_losses()
-
         if save_training_gif:
             imageio.mimsave('./gifs/training_{}_epochs.gif'.format(epochs),
                              training_progress_images)
-    def plot_losses(self):
-        """Plot the losses recorded during training."""
-        plt.figure(figsize=(10, 8))
 
-        # Plot Discriminator Loss
-        plt.subplot(2, 2, 1)
-        plt.plot(self.losses['D'], label='Discriminator Loss', color='red')
-        plt.title('Discriminator Loss')
-        plt.xlabel('Iterations')
-        plt.ylabel('Loss')
-        plt.legend()
-
-        # Plot Generator Loss
-        plt.subplot(2, 2, 2)
-        plt.plot(self.losses['G'], label='Generator Loss', color='blue')
-        plt.title('Generator Loss')
-        plt.xlabel('Iterations')
-        plt.ylabel('Loss')
-        plt.legend()
-
-        # Plot Gradient Penalty
-        plt.subplot(2, 2, 3)
-        plt.plot(self.losses['GP'], label='Gradient Penalty', color='green')
-        plt.title('Gradient Penalty')
-        plt.xlabel('Iterations')
-        plt.ylabel('Penalty')
-        plt.legend()
-
-        # Plot Gradient Norm
-        plt.subplot(2, 2, 4)
-        plt.plot(self.losses['gradient_norm'], label='Gradient Norm', color='purple')
-        plt.title('Gradient Norm')
-        plt.xlabel('Iterations')
-        plt.ylabel('Norm')
-        plt.legend()
-
-        plt.tight_layout()
-        plt.show()
         
     def sample_generator(self, num_samples):
         latent_samples = self.G.sample_latent(num_samples)
