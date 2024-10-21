@@ -79,7 +79,7 @@ print(generated_image.shape)
 fig, ax = plt.subplots()
 
 # Display the generated image
-ax.imshow(generated_image[0].permute(1, 2, 0).cpu().numpy(), cmap='gray')
+ax.imshow(generated_image, cmap='gray')
 
 # Optionally show axes
 ax.axis('on') 
