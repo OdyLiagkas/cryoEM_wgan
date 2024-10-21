@@ -3,6 +3,7 @@ import torch.optim as optim
 from dataloaders import CustomImageDataset, get_dataloader
 from models import Generator, Discriminator
 from training import Trainer
+import wandb
 
 #CONFIGURATIONS:
 ###########################################################################################
@@ -24,6 +25,22 @@ img_size = (128,128,1)
 
 epochs = 3 ### on Github they say 200 for the MNIST set
 ############################################################################################
+#WANDB:
+# start a new wandb run to track this script
+wandb.init(
+    # set the wandb project where this run will be logged
+    project="my-awesome-project",
+
+    # track hyperparameters and run metadata
+    config={
+    "learning_rate": lr,
+    "architecture": "Wasserstein GAN",
+    "dataset": "Custom",
+    "epochs": epochs,
+    }
+)
+###########################################################################################
+
 data_loader = get_dataloader(batch_size=batch_size)
 
 generator = Generator(img_size=img_size, latent_dim=noise_dim, dim=dim)
@@ -47,3 +64,4 @@ name = 'mnist_model'
 torch.save(trainer.G.state_dict(), './gen_' + name + '.pt')
 torch.save(trainer.D.state_dict(), './dis_' + name + '.pt')
 '''
+wandb.finish()
