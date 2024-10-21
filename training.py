@@ -21,6 +21,7 @@ class Trainer():
         self.gp_weight = gp_weight
         self.critic_iterations = critic_iterations
         self.print_every = print_every
+        self.plot_every = plot_every
 
         if self.use_cuda:
             self.G.cuda()
