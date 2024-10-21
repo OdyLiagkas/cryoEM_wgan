@@ -67,14 +67,17 @@ def main(config):
 
     # Generate a sample of 1 image from the generator
     num_samples = 1
-    generated_image = trainer.sample(num_samples=num_samples)
+    generated_image = trainer.sample(num_samples=num_samples, sampling =True)
+    print(generated_image.shape)
 
-    # Create a figure to display the generated image
+    # Create a figure
     fig, ax = plt.subplots()
-    ax.imshow(generated_image[0], cmap='gray')  # Assuming generated_image shape [1, h, w]
+
+    # Display the generated image
+    ax.imshow(generated_image, cmap='gray')
 
     # Optionally show axes
-    ax.axis('on')
+    ax.axis('on') 
 
     # Save the figure as an image and log it to W&B
     wandb.log({"Generated Image": wandb.Image(fig)})
@@ -82,7 +85,6 @@ def main(config):
     # Close the figure to free up memory
     plt.close(fig)
 
-    # Finish WandB logging
     wandb.finish()
 
 if __name__ == "__main__":
