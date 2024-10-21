@@ -72,7 +72,7 @@ torch.save(trainer.D.state_dict(), './dis_' + name + '.pt')
 
 # Generate a sample of 1 image from the generator
 num_samples = 1
-generated_image = trainer.sample(num_samples)
+generated_image = trainer.sample(num_samples=num_samples, sampling=True)
 print(generated_image.shape)
 
 # Create a figure
