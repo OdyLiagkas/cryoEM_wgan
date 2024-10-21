@@ -32,7 +32,7 @@ wandb.init(
     # set the wandb project where this run will be logged
     project="cryoEM-WGAN",
 
-    name="MNIST_One_Image_Dataset",
+    name="MNIST_One_Image_Dataset_MORE_PLOTS",
     
     # track hyperparameters and run metadata
     config={
