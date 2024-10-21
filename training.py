@@ -137,8 +137,7 @@ class Trainer():
             if i % self.plot_every == 0:
                 # Generate a sample of 1 image from the generator
                 num_samples = 1
-                generated_image = trainer.sample(num_samples=num_samples, sampling =True)
-                print(generated_image.shape)
+                generated_image = sample(num_samples=num_samples, sampling =True)
 
                 # Create a figure
                 fig, ax = plt.subplots()
