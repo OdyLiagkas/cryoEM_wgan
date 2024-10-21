@@ -22,7 +22,7 @@ betas = (beta_1,beta_2)
 
 img_size = (128,128,1)
 
-epochs = 30 ### on Github they say 200 for the MNIST set
+epochs = 300 ### on Github they say 200 for the MNIST set
 ############################################################################################
 data_loader = get_dataloader(batch_size=batch_size)
 
