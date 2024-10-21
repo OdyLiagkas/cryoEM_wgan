@@ -69,7 +69,10 @@ torch.save(trainer.G.state_dict(), './gen_' + name + '.pt')
 torch.save(trainer.D.state_dict(), './dis_' + name + '.pt')
 '''
 
-generated_image = generator(noise_dim)
+
+# Generate a sample of 1 image from the generator
+num_samples = 1
+generated_image = trainer.sample(num_samples)
 print(generated_image.shape)
 
 # Create a figure
