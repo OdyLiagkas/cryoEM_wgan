@@ -24,7 +24,7 @@ betas = (beta_1,beta_2)
 
 img_size = (128,128,1)
 
-epochs = 300 
+epochs = 3000 
 ############################################################################################
 #WANDB:
 # start a new wandb run to track this script
