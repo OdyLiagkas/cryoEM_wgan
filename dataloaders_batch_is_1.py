@@ -55,6 +55,7 @@ def get_dataloader(path_to_data='../MNIST_3/',
     transform = transforms.Compose([
         transforms.Resize(128),
         transforms.CenterCrop(128),
+        transforms.Grayscale(num_output_channels=1),
         transforms.ToTensor()
     ])
 
