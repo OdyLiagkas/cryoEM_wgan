@@ -44,7 +44,7 @@ class CustomImageDataset(Dataset):
 
 batch_size=1 #change to 128 ???
 
-def get_dataloader(path_to_data='../pngs/', 
+def get_dataloader(path_to_data='../MNIST_3/', 
                         batch_size=batch_size):
     """LSUN dataloader with (128, 128) sized images.
 
@@ -59,7 +59,7 @@ def get_dataloader(path_to_data='../pngs/',
     ])
 
     # Get dataset
-    particle_dset = CustomImageDataset(img_dir='../pngs/', transform=transform)
+    particle_dset = CustomImageDataset(img_dir='../MNIST_3/', transform=transform)
 
     particle_dset = particle_dset[0]
 
