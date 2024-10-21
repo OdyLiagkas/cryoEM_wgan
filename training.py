@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
+import wandb
 
 import matplotlib.pyplot as plt ##########################ADDED
 
@@ -105,7 +106,7 @@ class Trainer():
         return self.gp_weight * ((gradients_norm - 1) ** 2).mean()
 
     def _train_epoch(self, data_loader):
-        for i, data in enumerate(data_loader): #ADDED TQDM
+        for i, data in enumerate(data_loader):
             self.num_steps += 1
             self._critic_train_iteration(data)                         ###############changed it from (data[0]) because it didn't catpure the batch dim
             # Only update generator every |critic_iterations| iterations
@@ -119,7 +120,8 @@ class Trainer():
                 print("Gradient norm: {}".format(self.losses['gradient_norm'][-1]))
                 if self.num_steps > self.critic_iterations:
                     print("G: {}".format(self.losses['G'][-1]))
-            
+                    
+            wandb.log({"Critic Loss": self.losses['D'][-1], "Gradient Penalty": self.losses['GP'][-1], "Gradient Norm": self.losses['gradient_norm'][-1],"Generator Loss":self.losses['G'][-1] )
     
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
@@ -144,8 +146,6 @@ class Trainer():
                 # Add image grid to training progress
                 training_progress_images.append(img_grid)
 
-        print("Batch size is: ", batch_size)
-        print("Output size is: ", generated_data.size())
         self.plot_losses()
 
         if save_training_gif:
