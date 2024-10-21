@@ -14,17 +14,17 @@ device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
 batch_size = 1   # they have 64
 
 noise_dim = 100
-dim = 16 # don't know what this is yet. that's what they have
+dim = 16 
 
 # optimizer parameters:
 lr = 1e-4
-beta_1 = 0.5          #changed from 0.9 to .5 as is stated in the paper  
+beta_1 = 0.9          #changed from 0.9 to .5 as is stated in the paper  
 beta_2 = 0.99         #changed from 0.99 to .9 as is stated in the paper
 betas = (beta_1,beta_2)
 
 img_size = (128,128,1)
 
-epochs = 3000 
+epochs = 10000 
 ############################################################################################
 #WANDB:
 # start a new wandb run to track this script
