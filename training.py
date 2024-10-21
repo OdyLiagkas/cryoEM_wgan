@@ -209,11 +209,8 @@ class Trainer():
         generated_data = self.G(latent_samples)
         return generated_data
 
-    def sample(self, num_samples, sampling=False):
+    def sample(self, num_samples):
         generated_data = self.sample_generator(num_samples)
-
-        if(sampling==True):
-            return generated_data.cpu().detach.numpy()[:, 0, :, :]
         
         # Remove color channel
         return generated_data.cpu().numpy()[:, 0, :, :]
