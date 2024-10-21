@@ -24,7 +24,7 @@ betas = (beta_1,beta_2)
 
 img_size = (128,128,1)
 
-epochs = 3 ### on Github they say 200 for the MNIST set
+epochs = 300 
 ############################################################################################
 #WANDB:
 # start a new wandb run to track this script
