@@ -121,7 +121,19 @@ class Trainer():
                 if self.num_steps > self.critic_iterations:
                     print("G: {}".format(self.losses['G'][-1]))
                     
-            wandb.log({"Critic Loss": self.losses['D'][-1], "Gradient Penalty": self.losses['GP'][-1], "Gradient Norm": self.losses['gradient_norm'][-1],"Generator Loss":self.losses['G'][-1] })
+            log_dict = {
+            "Critic Loss": self.losses['D'][-1],
+            "Gradient Penalty": self.losses['GP'][-1],
+            "Gradient Norm": self.losses['gradient_norm'][-1],
+            }
+
+            # Only log Generator Loss if the condition is met (same as in the print statement)
+            if self.num_steps > self.critic_iterations:
+                log_dict["Generator Loss"] = self.losses['G'][-1]
+
+            wandb.log(log_dict)
+
+
     
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
