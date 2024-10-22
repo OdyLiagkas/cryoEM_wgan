@@ -8,7 +8,7 @@ data_paths:
   - "../pngs/"
 
 # Training parameters
-batch_size: 128   # Also needs to be changed in dataloader.py
+batch_size: 128  
 noise_dim: 100
 dim: 16  
 lr: 0.0001
