@@ -20,3 +20,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "Custom"
+  run_id: 'Custom'

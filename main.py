@@ -35,16 +35,8 @@ def main(config):
     run_id = f"bs{batch_size}_lr{lr}_b1{beta_1}_b2{beta_2}_ep{epochs}"
     wandb.init(
         project=config['wandb']['project'],
-        config={
-            "architecture": config['wandb']['architecture'],
-            "batch_size": batch_size,
-            "learning_rate": lr,
-            "beta_1": beta_1,
-            "beta_2": beta_2,
-            "epochs": epochs,
-            "dataset": config['wandb']['dataset'],
-        },
-        name=run_id,  # Set run name based on hyperparameters
+        config=config,
+        name=config['wandb']['run_id'],  # Set run name based on hyperparameters
     )
 
     # Load data
