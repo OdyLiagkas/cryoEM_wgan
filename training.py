@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt ##########################ADDED
 
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
-                 gp_weight=10, critic_iterations=5, print_every=50,
-                 use_cuda=False, plot_every=1000):
+                 gp_weight=10, critic_iterations=5, print_every=5000,
+                 use_cuda=False, plot_every=10000):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
