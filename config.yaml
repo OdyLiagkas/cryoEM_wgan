@@ -3,6 +3,10 @@
 # Device settings
 device: "cuda:0"  # If available, otherwise CPU will be used in the script
 
+# Path to dataset
+data_paths:
+  - "../pngs/"
+
 # Training parameters
 batch_size: 128   # Also needs to be changed in dataloader.py
 noise_dim: 100
@@ -17,7 +21,7 @@ plot_every: 5000
 
 # WandB settings
 wandb:
-  project: "cryoEM-WGAN"
+  project: "cryoEM-WGAN-reloaded"
   architecture: "Wasserstein GAN"
   dataset: "Custom"
   run_id: 'Custom'
