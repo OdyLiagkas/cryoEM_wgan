@@ -41,11 +41,7 @@ class CustomImageDataset(Dataset):
 
         return image#.permute(1,2,0)  #they want it to be 128x128x1
 
-
-batch_size=64 #change to 128 ???
-
-def get_dataloader(path_to_data='../pngs/', 
-                        batch_size=batch_size):
+def get_dataloader(path_to_data, batch_size=batch_size):
     """LSUN dataloader with (128, 128) sized images.
 
     path_to_data : str
