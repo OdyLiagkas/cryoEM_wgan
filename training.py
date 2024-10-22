@@ -1,12 +1,12 @@
-import imageio                 #####USED TO HAVE A LOT OF OUTDATED commands that aren't supported
+import time  
+import imageio
 import numpy as np
 import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
 import wandb
 from utils import normalize_array
-
-import matplotlib.pyplot as plt ##########################ADDED
+import matplotlib.pyplot as plt
 
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
@@ -28,7 +28,6 @@ class Trainer():
             self.G.to(self.device)
             self.D.to(self.device)
 
-    
     def _critic_train_iteration(self, data):
         """ """
         # Get generated data
@@ -43,7 +42,7 @@ class Trainer():
 
         # Get gradient penalty
         gradient_penalty = self._gradient_penalty(data, generated_data)
-        self.losses['GP'].append(gradient_penalty.item())  # Use .item() to get the scalar value   used to be .data[0] which no longer works
+        self.losses['GP'].append(gradient_penalty.item())  # Use .item() to get the scalar value
 
         # Create total loss and optimize
         self.D_opt.zero_grad()
@@ -70,14 +69,13 @@ class Trainer():
 
         # Record loss
         self.losses['G'].append(g_loss.item())  # Use .item() to get the scalar value
-    
+
     def _gradient_penalty(self, real_data, generated_data):
         batch_size = real_data.size(0)
 
         # Calculate interpolation
         alpha = torch.rand(batch_size, 1, 1, 1)
         alpha = alpha.expand_as(real_data)
-        #print(alpha.shape)                    ###############################################################
         if self.device:
             alpha = alpha.to(self.device)
         interpolated = alpha * real_data + (1 - alpha) * generated_data
@@ -108,12 +106,14 @@ class Trainer():
         return self.gp_weight * ((gradients_norm - 1) ** 2).mean()
 
     def _train_epoch(self, data_loader):
+        epoch_start_time = time.time()  # Start time for the epoch
         for i, data in enumerate(data_loader):
             self.num_steps += 1
-            self._critic_train_iteration(data)                         ###############changed it from (data[0]) because it didn't catpure the batch dim
+            self._critic_train_iteration(data)
+
             # Only update generator every |critic_iterations| iterations
             if self.num_steps % self.critic_iterations == 0:
-                self._generator_train_iteration(data)                 ###############changed it from (data[0]) because it didn't catpure the batch dim
+                self._generator_train_iteration(data)
 
             if i % self.print_every == 0:
                 print("Iteration {}".format(i + 1))
@@ -122,11 +122,11 @@ class Trainer():
                 print("Gradient norm: {}".format(self.losses['gradient_norm'][-1]))
                 if self.num_steps > self.critic_iterations:
                     print("G: {}".format(self.losses['G'][-1]))
-                    
+
                 log_dict = {
-                "Critic Loss": self.losses['D'][-1],
-                "Gradient Penalty": self.losses['GP'][-1],
-                "Gradient Norm": self.losses['gradient_norm'][-1],
+                    "Critic Loss": self.losses['D'][-1],
+                    "Gradient Penalty": self.losses['GP'][-1],
+                    "Gradient Norm": self.losses['gradient_norm'][-1],
                 }
 
                 # Only log Generator Loss if the condition is met (same as in the print statement)
@@ -134,28 +134,20 @@ class Trainer():
                     log_dict["Generator Loss"] = self.losses['G'][-1]
 
                 wandb.log(log_dict)
-        
+
             if i % self.plot_every == 0:
                 # Generate a sample of 1 image from the generator
                 num_samples = 1
                 generated_image = self.sample(num_samples=num_samples, sampling=True)
 
-                fig = normalize_array(generated_image)*255
-                # # Create a figure
-                # fig, ax = plt.subplots()
-                #
-                # # Display the generated image
-                # ax.imshow(generated_image, cmap='gray')
-                #
-                # # Optionally show axes
-                # ax.axis('on')
-
-                # Save the figure as an image and log it to W&B
+                fig = normalize_array(generated_image) * 255
                 wandb.log({"Generated Image": wandb.Image(fig)})
 
-                # Close the figure to free up memory
-                #plt.close(fig)
-    
+        epoch_end_time = time.time()  # End time for the epoch
+        epoch_duration = round((epoch_end_time - epoch_start_time) / 60, 2)  # Duration in minutes
+        print(f"Epoch completed in {epoch_duration} minutes.")
+        wandb.log({"Epoch Time (minutes)": epoch_duration})
+
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
             # Fix latents to see how image generation improves during training
@@ -165,25 +157,19 @@ class Trainer():
             training_progress_images = []
 
         for epoch in range(epochs):
-            print("\nEpoch {}".format(epoch + 1))
+            print(f"\nEpoch {epoch + 1}/{epochs}")
             self._train_epoch(data_loader)
 
             if save_training_gif:
                 # Generate batch of images and convert to grid
                 img_grid = make_grid(self.G(fixed_latents).cpu())
-                # Convert to numpy and transpose axes to fit imageio convention
-                # i.e. (width, height, channels)
                 img_grid = np.transpose(img_grid.numpy(), (1, 2, 0))
-                # Ensure the pixel values are in range [0, 255] and convert to uint8
                 img_grid = (img_grid * 255).astype(np.uint8)
-                # Add image grid to training progress
                 training_progress_images.append(img_grid)
 
         if save_training_gif:
-            imageio.mimsave('./gifs/training_{}_epochs.gif'.format(epochs),
-                             training_progress_images)
+            imageio.mimsave(f'./gifs/training_{epochs}_epochs.gif', training_progress_images)
 
-        
     def sample_generator(self, num_samples):
         latent_samples = self.G.sample_latent(num_samples)
         if self.device:
@@ -191,13 +177,13 @@ class Trainer():
         generated_data = self.G(latent_samples)
         return generated_data
 
-    def sample(self, num_samples, sampling = False):
+    def sample(self, num_samples, sampling=False):
         generated_data = self.sample_generator(num_samples)
 
-        if(sampling==True):
+        if sampling:
             generated_data = generated_data.detach()
             generated_data.squeeze()
             return generated_data.cpu().numpy()[0, 0, :, :]
-        
+
         # Remove color channel
         return generated_data.cpu().numpy()[:, 0, :, :]
