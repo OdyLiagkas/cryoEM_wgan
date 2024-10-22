@@ -19,7 +19,7 @@ dim = 16
 # optimizer parameters:
 lr = 1e-4
 beta_1 = 0.4          #changed from 0.9 to .5 as is stated in the paper  
-beta_2 = 0.99         #changed from 0.99 to .9 as is stated in the paper
+beta_2 = 0.995         #changed from 0.99 to .9 as is stated in the paper
 betas = (beta_1,beta_2)
 
 img_size = (128,128,1)
@@ -32,7 +32,7 @@ wandb.init(
     # set the wandb project where this run will be logged
     project="cryoEM-WGAN",
 
-    name="CLEAR_PARTICLE_RUN",
+    name="CLEAR_PARTICLE_RUN_b1_0.4_b2_0.995",
     
     # track hyperparameters and run metadata
     config={
