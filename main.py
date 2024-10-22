@@ -62,7 +62,7 @@ def main(config):
 
     # Train model
     trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer,
-                      use_cuda=torch.cuda.is_available())
+                      use_cuda=torch.cuda.is_available(), plot_every=config['plot_every'])
     trainer.train(data_loader, epochs, save_training_gif=False)
 
     # Generate a sample of 1 image from the generator

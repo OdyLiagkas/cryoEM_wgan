@@ -4,13 +4,15 @@ import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
 import wandb
+from utils import normalize_array
+from PIL import Image
 
 import matplotlib.pyplot as plt ##########################ADDED
 
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=5000,
-                 use_cuda=False, plot_every=10000):
+                 use_cuda=False, plot_every=1):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
@@ -137,16 +139,17 @@ class Trainer():
             if i % self.plot_every == 0:
                 # Generate a sample of 1 image from the generator
                 num_samples = 1
-                generated_image = self.sample(num_samples=num_samples, sampling =True)
+                generated_image = self.sample(num_samples=num_samples, sampling=True)
 
-                # Create a figure
-                fig, ax = plt.subplots()
-
-                # Display the generated image
-                ax.imshow(generated_image, cmap='gray')
-
-                # Optionally show axes
-                ax.axis('on') 
+                fig = normalize_array(generated_image)*255
+                # # Create a figure
+                # fig, ax = plt.subplots()
+                #
+                # # Display the generated image
+                # ax.imshow(generated_image, cmap='gray')
+                #
+                # # Optionally show axes
+                # ax.axis('on')
 
                 # Save the figure as an image and log it to W&B
                 wandb.log({"Generated Image": wandb.Image(fig)})
