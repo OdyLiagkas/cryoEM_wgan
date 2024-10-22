@@ -23,6 +23,7 @@ class Trainer():
         self.critic_iterations = critic_iterations
         self.print_every = print_every
         self.plot_every = plot_every
+        self.cumulative_time = 0  # Initialize cumulative time tracking
 
         if self.device:
             self.G.to(self.device)
@@ -145,8 +146,10 @@ class Trainer():
 
         epoch_end_time = time.time()  # End time for the epoch
         epoch_duration = round((epoch_end_time - epoch_start_time) / 60, 2)  # Duration in minutes
+        self.cumulative_time += epoch_duration  # Update cumulative time
         print(f"Epoch completed in {epoch_duration} minutes.")
-        wandb.log({"Epoch Time (minutes)": epoch_duration})
+        print(f"Cumulative training time: {self.cumulative_time} minutes.")  # Print cumulative time
+        wandb.log({"Epoch Time (minutes)": epoch_duration, "Cumulative Time (minutes)": self.cumulative_time})
 
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
@@ -187,3 +190,4 @@ class Trainer():
 
         # Remove color channel
         return generated_data.cpu().numpy()[:, 0, :, :]
+
