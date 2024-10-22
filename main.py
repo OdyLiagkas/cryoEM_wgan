@@ -7,6 +7,7 @@ import wandb
 import matplotlib.pyplot as plt
 import yaml
 import argparse
+from utils import normalize_array
 
 # Function to load config from YAML file
 def load_config(yaml_file):
@@ -68,16 +69,17 @@ def main(config):
     # Generate a sample of 1 image from the generator
     num_samples = 1
     generated_image = trainer.sample(num_samples=num_samples, sampling =True)
-    print(generated_image.shape)
 
-    # Create a figure
-    fig, ax = plt.subplots()
+    # # Create a figure
+    # fig, ax = plt.subplots()
+    #
+    # # Display the generated image
+    # ax.imshow(generated_image, cmap='gray')
+    #
+    # # Optionally show axes
+    # ax.axis('on')
+    fig = normalize_array(generated_image)*255
 
-    # Display the generated image
-    ax.imshow(generated_image, cmap='gray')
-
-    # Optionally show axes
-    ax.axis('on') 
 
     # Save the figure as an image and log it to W&B
     wandb.log({"Generated Image": wandb.Image(fig)})
