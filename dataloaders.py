@@ -48,6 +48,6 @@ def get_dataloader(paths_to_data, batch_size):
 
     # Get dataset
     particle_dset = CustomImageDataset(img_dir=selected_path, transform=transform)
-DataLoader(dataset, batch_size=64, shuffle=True, )
 
-return DataLoader(particle_dset, batch_size=batch_size, shuffle=True,num_workers=8)
+
+    return DataLoader(particle_dset, batch_size=batch_size, shuffle=True,num_workers=8)
