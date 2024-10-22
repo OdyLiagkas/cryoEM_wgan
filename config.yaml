@@ -15,7 +15,7 @@ lr: 0.0001
 beta_1: 0.2
 beta_2: 0.995
 img_size: [128, 128, 1]
-epochs: 3  
+epochs: 2000  
 print_every: 5000
 plot_every: 5000
 
