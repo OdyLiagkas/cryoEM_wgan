@@ -55,7 +55,7 @@ def get_dataloader(path_to_data, batch_size=batch_size):
     ])
 
     # Get dataset
-    particle_dset = CustomImageDataset(img_dir='../pngs/', transform=transform)
+    particle_dset = CustomImageDataset(img_dir = path_to_data, transform=transform)
 
     # Create dataloader
     return DataLoader(particle_dset, batch_size=batch_size, shuffle=True)
