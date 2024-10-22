@@ -12,22 +12,22 @@ import matplotlib.pyplot as plt ##########################ADDED
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=5000,
-                 use_cuda=False, plot_every=1):
+                 device=False, plot_every=1):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
         self.D_opt = dis_optimizer
         self.losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
         self.num_steps = 0
-        self.use_cuda = use_cuda
+        self.device = device
         self.gp_weight = gp_weight
         self.critic_iterations = critic_iterations
         self.print_every = print_every
         self.plot_every = plot_every
 
-        if self.use_cuda:
-            self.G.cuda()
-            self.D.cuda()
+        if self.device:
+            self.G.to(self.device)
+            self.D.to(self.device)
 
     
     def _critic_train_iteration(self, data):
@@ -37,8 +37,8 @@ class Trainer():
         generated_data = self.sample_generator(batch_size)
 
         # Calculate probabilities on real and generated data
-        if self.use_cuda:
-            data = data.cuda()
+        if self.device:
+            data = data.to(self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
 
@@ -79,20 +79,20 @@ class Trainer():
         alpha = torch.rand(batch_size, 1, 1, 1)
         alpha = alpha.expand_as(real_data)
         #print(alpha.shape)                    ###############################################################
-        if self.use_cuda:
-            alpha = alpha.cuda()
+        if self.device:
+            alpha = alpha.to(self.device)
         interpolated = alpha * real_data + (1 - alpha) * generated_data
         interpolated.requires_grad_(True)
 
-        if self.use_cuda:
-            interpolated = interpolated.cuda()
+        if self.device:
+            interpolated = interpolated.to(self.device)
 
         # Calculate probability of interpolated examples
         prob_interpolated = self.D(interpolated)
 
         # Calculate gradients of probabilities with respect to examples
         gradients = torch.autograd.grad(outputs=prob_interpolated, inputs=interpolated,
-                                         grad_outputs=torch.ones(prob_interpolated.size()).cuda() if self.use_cuda else torch.ones(
+                                         grad_outputs=torch.ones(prob_interpolated.size()).to(self.device) if self.device else torch.ones(
                                              prob_interpolated.size()),
                                          create_graph=True, retain_graph=True)[0]
 
@@ -161,8 +161,8 @@ class Trainer():
         if save_training_gif:
             # Fix latents to see how image generation improves during training
             fixed_latents = self.G.sample_latent(64)
-            if self.use_cuda:
-                fixed_latents = fixed_latents.cuda()
+            if self.device:
+                fixed_latents = fixed_latents.to(self.device)
             training_progress_images = []
 
         for epoch in range(epochs):
@@ -187,8 +187,8 @@ class Trainer():
         
     def sample_generator(self, num_samples):
         latent_samples = self.G.sample_latent(num_samples)
-        if self.use_cuda:
-            latent_samples = latent_samples.cuda()
+        if self.device:
+            latent_samples = latent_samples.to(self.device)
         generated_data = self.G(latent_samples)
         return generated_data
 
