@@ -5,14 +5,13 @@ import torch.nn as nn
 from torchvision.utils import make_grid
 import wandb
 from utils import normalize_array
-from PIL import Image
 
 import matplotlib.pyplot as plt ##########################ADDED
 
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=5000,
-                 device=False, plot_every=1):
+                 device='cpu', plot_every=1):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
