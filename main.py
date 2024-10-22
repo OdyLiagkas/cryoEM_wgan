@@ -77,7 +77,7 @@ def main(config):
     wandb.log({"Generated Image": wandb.Image(fig)})
 
     # Close the figure to free up memory
-    plt.close(fig)
+    #plt.close(fig)
 
     wandb.finish()
 

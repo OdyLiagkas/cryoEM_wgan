@@ -154,7 +154,7 @@ class Trainer():
                 wandb.log({"Generated Image": wandb.Image(fig)})
 
                 # Close the figure to free up memory
-                plt.close(fig)
+                #plt.close(fig)
     
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
