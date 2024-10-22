@@ -1,6 +1,6 @@
 import torch
 import torch.optim as optim
-from dataloaders import CustomImageDataset, get_dataloader
+from dataloaders import get_dataloader
 from models import Generator, Discriminator
 from training import Trainer
 import wandb
@@ -39,8 +39,9 @@ def main(config):
         name=config['wandb']['run_id'],  # Set run name based on hyperparameters
     )
 
-    # Load data
-    data_loader = get_dataloader(batch_size=batch_size)
+    # Load data paths from config and select the first one (if needed, you can modify this to select multiple)
+    data_paths = config['data_paths']  # List of data paths from config
+    data_loader = get_dataloader(paths_to_data=data_paths, batch_size=batch_size)
 
     # Initialize Generator and Discriminator
     generator = Generator(img_size=img_size, latent_dim=noise_dim, dim=dim)
@@ -60,24 +61,12 @@ def main(config):
 
     # Generate a sample of 1 image from the generator
     num_samples = 1
-    generated_image = trainer.sample(num_samples=num_samples, sampling =True)
+    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
 
-    # # Create a figure
-    # fig, ax = plt.subplots()
-    #
-    # # Display the generated image
-    # ax.imshow(generated_image, cmap='gray')
-    #
-    # # Optionally show axes
-    # ax.axis('on')
-    fig = normalize_array(generated_image)*255
-
+    fig = normalize_array(generated_image) * 255
 
     # Save the figure as an image and log it to W&B
     wandb.log({"Generated Image": wandb.Image(fig)})
-
-    # Close the figure to free up memory
-    #plt.close(fig)
 
     wandb.finish()
 
