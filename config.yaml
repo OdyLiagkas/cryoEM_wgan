@@ -11,16 +11,16 @@ data_paths:
 batch_size: 128  
 noise_dim: 100
 dim: 16  
-lr: 0.0001
+lr: 1e-4
 beta_1: 0.2
 beta_2: 0.995
 img_size: [128, 128, 1]
-epochs: 2000  
+epochs: 3000  
 print_every: 5000
 
 # WandB settings
 wandb:
   project: "cryoEM-WGAN-reloaded"
   architecture: "Wasserstein GAN"
-  dataset: "Custom"
-  run_id: 'Custom'
+  dataset: "10K_Particles"
+  run_id: 'Lr: 1e-4'
