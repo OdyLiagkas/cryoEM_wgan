@@ -37,7 +37,7 @@ def main(config):
         project=config['wandb']['project'],
         config=config,
         name=config['wandb']['run_id'],  # Set run name based on hyperparameters
-        , entity="cryo_team_di")
+        entity="cryo_team_di")
     )
 
     # Load data paths from config and select the first one (if needed, you can modify this to select multiple)
