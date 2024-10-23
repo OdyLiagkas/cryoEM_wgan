@@ -66,8 +66,29 @@ def main(config):
     fig = normalize_array(generated_image) * 255
 
     # Save the figure as an image and log it to W&B
-    wandb.log({"Generated Image": wandb.Image(fig)})
+    wandb.log({"Generated Image [1]": wandb.Image(fig)})
 
+    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
+
+    fig = normalize_array(generated_image) * 255
+
+    # Save the figure as an image and log it to W&B
+    wandb.log({"Generated Image [2]": wandb.Image(fig)})
+
+    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
+
+    fig = normalize_array(generated_image) * 255
+
+    # Save the figure as an image and log it to W&B
+    wandb.log({"Generated Image [3]": wandb.Image(fig)})
+
+    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
+
+    fig = normalize_array(generated_image) * 255
+
+    # Save the figure as an image and log it to W&B
+    wandb.log({"Generated Image [4]": wandb.Image(fig)})
+    
     wandb.finish()
 
 if __name__ == "__main__":
