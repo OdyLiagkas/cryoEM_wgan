@@ -149,7 +149,7 @@ class Trainer():
         self.cumulative_time += epoch_duration  # Update cumulative time
         print(f"Epoch completed in {epoch_duration} minutes.")
         print(f"Cumulative training time: {self.cumulative_time} minutes.")  # Print cumulative time
-        wandb.log({"Epoch Time (minutes)": epoch_duration, "Cumulative Time (minutes)": self.cumulative_time})
+        wandb.log({"Cumulative Time (minutes)": self.cumulative_time})
 
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
