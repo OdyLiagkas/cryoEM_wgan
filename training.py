@@ -128,9 +128,8 @@ class Trainer():
             "Critic Loss (mean)": np.mean(self.epoch_losses['D']),
             "Gradient Penalty (mean)": np.mean(self.epoch_losses['GP']),
             "Gradient Norm (mean)": np.mean(self.epoch_losses['gradient_norm']),
+            "Generator Loss (mean)" : np.mean(self.epoch_losses['G'])
         }
-        if self.num_steps > self.critic_iterations:
-            log_dict["Generator Loss (mean)"] = np.mean(self.epoch_losses['G'])
 
         wandb.log(log_dict)
         wandb.log({"Cumulative Time (minutes)": self.cumulative_time})
