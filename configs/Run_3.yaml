@@ -24,4 +24,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: 'Lr: 1e-5'
+  run_id: 'Lr: 1e-4'
