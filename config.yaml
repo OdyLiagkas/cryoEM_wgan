@@ -1,3 +1,4 @@
+
 # config.yaml
 
 # Device settings
@@ -12,7 +13,7 @@ batch_size: 128
 noise_dim: 100
 dim: 16  
 lr: 0.0001
-beta_1: 0.9
+beta_1: 0.2
 beta_2: 0.99
 img_size: [128, 128, 1]
 epochs: 3000  
@@ -23,4 +24,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: 'Lr: 1e-4'
+  run_id: 'Lr: 1e-5'
