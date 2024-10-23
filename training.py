@@ -115,7 +115,6 @@ class Trainer():
         num_samples = 1   # CAN BE CHANGED TO BE A PARAMETER 
         generated_image = self.sample(num_samples=num_samples, sampling=True)
         fig = normalize_array(generated_image) * 255
-        wandb.log({"Generated Image": wandb.Image(fig)})
 
         epoch_end_time = time.time()  
         epoch_duration = round((epoch_end_time - epoch_start_time) / 60, 2)  
@@ -128,11 +127,12 @@ class Trainer():
             "Critic Loss (mean)": np.mean(self.epoch_losses['D']),
             "Gradient Penalty (mean)": np.mean(self.epoch_losses['GP']),
             "Gradient Norm (mean)": np.mean(self.epoch_losses['gradient_norm']),
-            "Generator Loss (mean)" : np.mean(self.epoch_losses['G'])
+            "Generator Loss (mean)" : np.mean(self.epoch_losses['G']),
+            "Cumulative Time (minutes)": self.cumulative_time,
+            "Generated Image": wandb.Image(fig)
         }
 
         wandb.log(log_dict)
-        wandb.log({"Cumulative Time (minutes)": self.cumulative_time})
 
         # Reset epoch loss tracker
         self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
