@@ -9,6 +9,7 @@ import yaml
 import argparse
 from utils import normalize_array
 import torchvision.utils as vutils  # Import make_grid
+import numpy as np
 
 # Function to load config from YAML file
 def load_config(yaml_file):
@@ -61,28 +62,24 @@ def main(config):
                       device=device, print_every=config['print_every'])
     trainer.train(data_loader, epochs, save_training_gif=False)
 
-    # Collect generated images
-    num_samples = 4
+    # Plot 4 generated images on wandb
+    num_samples = 4  
     generated_images = []
 
     for _ in range(num_samples):
         generated_image = trainer.sample(num_samples=1, sampling=True)
+        generated_image = np.expand_dims(generated_image, axis=(0, 1))  # Adding batch and channel dimensions
+        generated_image_tensor = torch.tensor(generated_image).to(device)  # Convert numpy to tensor
+        generated_images.append(generated_image_tensor)
 
-        # Ensure the generated image is a PyTorch tensor, normalize it if needed
-        generated_image = torch.tensor(generated_image).to(device)  # Convert numpy to tensor if necessary
-        generated_images.append(generated_image)
-
-    # Stack images and create a grid
     generated_images = torch.cat(generated_images, dim=0)  # Concatenate the tensors along batch dimension
-    grid = vutils.make_grid(generated_images, nrow=2, normalize=True, scale_each=True)  # 2X2
+    grid = vutils.make_grid(generated_images, nrow=2, normalize=True, scale_each=True)  # 2x2 grid + normalize = True
 
-    # Convert to numpy for logging
-    grid = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
+    # Convert to numpy to log on WandB
+    grid_np = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
 
-    # Log the grid as a single image to W&B
-    wandb.log({"Generated Images Grid": wandb.Image(grid)})
+    wandb.log({"Generated Images Grid": wandb.Image(grid_np)})
 
-    wandb.finish()
 
 if __name__ == "__main__":
     # Argument parser to pass the path of the YAML config file
