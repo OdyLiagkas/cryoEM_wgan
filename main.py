@@ -74,7 +74,7 @@ def main(config):
 
     # Stack images and create a grid
     generated_images = torch.cat(generated_images, dim=0)  # Concatenate the tensors along batch dimension
-    grid = vutils.make_grid(generated_images, nrow=2, normalize=True, scale_each=True)
+    grid = vutils.make_grid(generated_images, nrow=2, normalize=True, scale_each=True)  # 2X2
 
     # Convert to numpy for logging
     grid = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
