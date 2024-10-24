@@ -32,13 +32,11 @@ def main(config):
     betas = (beta_1, beta_2)
     img_size = tuple(config['img_size'])  # Convert list to tuple
     epochs = config['epochs']
-
-    # WANDB setup: Use parameters from the config
-    run_id = f"bs{batch_size}_lr{lr}_b1{beta_1}_b2{beta_2}_ep{epochs}"
+    
     wandb.init(
         project=config['wandb']['project'],
         config=config,
-        name=config['wandb']['run_id'],  # Set run name based on hyperparameters
+        name=config['wandb']['run_id'],  
         entity="cryo_team_di"
     )
 
