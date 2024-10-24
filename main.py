@@ -67,10 +67,14 @@ def main(config):
 
     for _ in range(num_samples):
         generated_image = trainer.sample(num_samples=1, sampling=True)
+
+        # Ensure the generated image is a PyTorch tensor, normalize it if needed
+        generated_image = torch.tensor(generated_image).to(device)  # Convert numpy to tensor if necessary
         generated_images.append(generated_image)
 
-    # Create a grid of images
-    grid = vutils.make_grid(torch.cat(generated_images), nrow=2, normalize=True, scale_each=True)
+    # Stack images and create a grid
+    generated_images = torch.cat(generated_images, dim=0)  # Concatenate the tensors along batch dimension
+    grid = vutils.make_grid(generated_images, nrow=2, normalize=True, scale_each=True)
 
     # Convert to numpy for logging
     grid = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
