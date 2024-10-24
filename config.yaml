@@ -16,7 +16,7 @@ lr: 0.0001
 beta_1: 0.9
 beta_2: 0.99
 img_size: [128, 128, 1]
-epochs: 30  
+epochs: 20000  
 print_every: 5000
 
 # WandB settings
