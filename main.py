@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import yaml
 import argparse
 from utils import normalize_array
+import torchvision.utils as vutils  # Import make_grid
 
 # Function to load config from YAML file
 def load_config(yaml_file):
@@ -60,36 +61,23 @@ def main(config):
                       device=device, print_every=config['print_every'])
     trainer.train(data_loader, epochs, save_training_gif=False)
 
-    # Generate a sample of 1 image from the generator
-    num_samples = 1
-    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
+    # Collect generated images
+    num_samples = 4
+    generated_images = []
 
-    fig = normalize_array(generated_image) * 255
+    for _ in range(num_samples):
+        generated_image = trainer.sample(num_samples=1, sampling=True)
+        generated_images.append(generated_image)
 
-    # Save the figure as an image and log it to W&B
-    wandb.log({"Generated Image [1]": wandb.Image(fig)})
+    # Create a grid of images
+    grid = vutils.make_grid(torch.cat(generated_images), nrow=2, normalize=True, scale_each=True)
 
-    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
+    # Convert to numpy for logging
+    grid = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
 
-    fig = normalize_array(generated_image) * 255
+    # Log the grid as a single image to W&B
+    wandb.log({"Generated Images Grid": wandb.Image(grid)})
 
-    # Save the figure as an image and log it to W&B
-    wandb.log({"Generated Image [2]": wandb.Image(fig)})
-
-    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
-
-    fig = normalize_array(generated_image) * 255
-
-    # Save the figure as an image and log it to W&B
-    wandb.log({"Generated Image [3]": wandb.Image(fig)})
-
-    generated_image = trainer.sample(num_samples=num_samples, sampling=True)
-
-    fig = normalize_array(generated_image) * 255
-
-    # Save the figure as an image and log it to W&B
-    wandb.log({"Generated Image [4]": wandb.Image(fig)})
-    
     wandb.finish()
 
 if __name__ == "__main__":
