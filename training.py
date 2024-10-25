@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
 import wandb
-from utils import normalize_array, gaussian, normalize_tensor
+from utils import normalize_array, _get_gaussian_weights, gaussian, normalize_tensor
 import matplotlib.pyplot as plt
 
 class Trainer():
@@ -24,6 +24,9 @@ class Trainer():
         self.critic_iterations = critic_iterations
         self.print_every = print_every
         self.cumulative_time = 0  # Initialize cumulative time tracking
+        self.gaussian_filter = gaussian_filter
+        if self.gaussian_filter:
+            self.standarize = True
 
         if self.device:
             self.G.to(self.device)
@@ -95,13 +98,33 @@ class Trainer():
         gradients_norm = torch.sqrt(torch.sum(gradients ** 2, dim=1) + 1e-12)
         return self.gp_weight * ((gradients_norm - 1) ** 2).mean()
 
+    def batch_standarization(self, x):
+        mean = torch.mean(x, dim=(1,2,3), keepdim=True)
+        std = torch.std(x, dim=(1,2,3), keepdim=True)
+        x = (x - mean) / std
+        return x
+
     def _train_epoch(self, data_loader):
-        epoch_start_time = time.time()  
+        epoch_start_time = time.time()
+        #Apply gaussian filter
+        if self.gaussian_filter:
+            s = data_loader.dataset.particles.shape
+            s = (s[-2],s[-1])
+            if 0.025*(self.epoch+1) > s[0]:
+                self.gaussian_filter = False
+            self.gw = _get_gaussian_weights(s, 0.025*(self.epoch+1))
 
         for i, data in enumerate(data_loader):
             self.num_steps += 1
+            #Apply gaussian filter
+            if self.gaussian_filter:
+                data = gaussian(data, 0, weights=self.gw)
+            #Standarize data
+            if self.standarize:
+                data = self.batch_standarization(data)
+            #Train discriminator
             self._critic_train_iteration(data)
-
+            #Train generator
             if self.num_steps % self.critic_iterations == 0:
                 self._generator_train_iteration(data)
 
@@ -145,6 +168,7 @@ class Trainer():
             training_progress_images = []
 
         for epoch in range(epochs):
+            self.epoch = epoch
             print(f"\nEpoch {epoch + 1}/{epochs}")
             self._train_epoch(data_loader)
 

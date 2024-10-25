@@ -18,11 +18,11 @@ beta_2: 0.99
 img_size: [128, 128, 1]
 epochs: 20000  
 print_every: 5000
-standarization: True
-gaussian_filter: False
+standarization: False
+gaussian_filter: True
 # WandB settings
 wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: '20K epochs, batch_size 32 standarization'
+  run_id: '20K epochs, batch_size 32 gaussian filter'

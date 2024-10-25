@@ -155,7 +155,7 @@ def _get_gaussian_weights(size: Tuple[int], D0: float, device: str = 'cpu') -> T
     return weights
 
 
-def gaussian(image: Tensor, D0: float) -> Tensor:
+def gaussian(image: Tensor, D0: float, weights=[]) -> Tensor:
     """Gaussian low-pass filter for images.
 
     Args:
@@ -165,7 +165,8 @@ def gaussian(image: Tensor, D0: float) -> Tensor:
     Returns:
         Tensor: [B, C, H, W].
     """
-    weights = _get_gaussian_weights(image.shape[-2:], D0=D0, device=image.device)
+    if not len(weights):
+        weights = _get_gaussian_weights(image.shape[-2:], D0=D0, device=image.device)
     image_fft = _to_freq(image)
     image_fft = image_fft * weights
     image = _to_space(image_fft)
