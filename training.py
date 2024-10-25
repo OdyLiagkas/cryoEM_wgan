@@ -27,6 +27,8 @@ class Trainer():
         self.gaussian_filter = gaussian_filter
         if self.gaussian_filter:
             self.standarize = True
+        else:
+            self.standarize = False
 
         if self.device:
             self.G.to(self.device)
