@@ -6,7 +6,7 @@ device: "cuda:0"  # If available, otherwise CPU will be used in the script
 
 # Path to dataset
 data_paths:
-  - "'/nvme/h/gr24az1/data/sim_particles/"
+  - "/nvme/h/gr24az1/data/sim_particles/"
 
 # Training parameters
 batch_size: 32  
