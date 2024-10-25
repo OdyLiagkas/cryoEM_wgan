@@ -122,7 +122,7 @@ class Trainer():
                 data = gaussian(data, 0, weights=self.gw)
             #Standarize data
             if self.standarize:
-                data = self.normalize_tensor(data)#normalize_tensor(data)
+                data = self.batch_standarization(data)#normalize_tensor(data)
             #Train discriminator
             self._critic_train_iteration(data)
             #Train generator
