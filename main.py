@@ -42,7 +42,7 @@ def main(config):
 
     # Load data paths from config and select the first one (if needed, you can modify this to select multiple)
     data_paths = config['data_paths']  # List of data paths from config
-    data_loader = get_dataloader(paths_to_data=data_paths, batch_size=batch_size)
+    data_loader = get_dataloader(paths_to_data=data_paths, batch_size=batch_size, standarization=config['standarization'])
 
     # Initialize Generator and Discriminator
     generator = Generator(img_size=img_size, latent_dim=noise_dim, dim=dim)
