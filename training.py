@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
 import wandb
-from utils import normalize_array, normalize_tensor, _get_gaussian_weights, gaussian, normalize_tensor
+from utils import normalize_array, normalize_tensor, _get_gaussian_weights, gaussian
 import matplotlib.pyplot as plt
 
 class Trainer():
@@ -122,7 +122,7 @@ class Trainer():
                 data = gaussian(data, 0, weights=self.gw)
             #Standarize data
             if self.standarize:
-                data = self.batch_standarization(data)
+                data = normalize_tensor(data)
             #Train discriminator
             self._critic_train_iteration(data)
             #Train generator
