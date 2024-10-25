@@ -6,7 +6,7 @@ device: "cuda:0"  # If available, otherwise CPU will be used in the script
 
 # Path to dataset
 data_paths:
-  - "../pngs/"
+  - "'/nvme/h/gr24az1/data/sim_particles/"
 
 # Training parameters
 batch_size: 32  
@@ -25,4 +25,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: '20K epochs, batch_size 32 gaussian filter'
+  run_id: '20K epochs, batch_size 32 gaussian filter batch_standarization'
