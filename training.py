@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=5000,
-                 device='cpu'):
+                 device='cpu', gaussian_filter = False):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
