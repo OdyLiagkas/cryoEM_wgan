@@ -20,8 +20,7 @@ class CustomImageDataset(Dataset):
                 image = self.transform(image)
             else:
                 image = (np.array(image)/255)[None, :, :]
-            print(image.min())
-            self.particles.append(image)
+            self.particles.append(np.array(image))
         self.particles = np.array(self.particles)
         if standarization:
             self.particles = (self.particles - self.particles.mean())/self.particles.std()
