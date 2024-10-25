@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
 import wandb
-from utils import normalize_array, _get_gaussian_weights, gaussian, normalize_tensor
+from utils import normalize_array, normalize_tensor, _get_gaussian_weights, gaussian, normalize_tensor
 import matplotlib.pyplot as plt
 
 class Trainer():
