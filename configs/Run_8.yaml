@@ -1,0 +1,27 @@
+
+# config.yaml
+
+# Device settings
+device: "cuda:0"  # If available, otherwise CPU will be used in the script
+
+# Path to dataset
+data_paths:
+  - "../pngs/"
+
+# Training parameters
+batch_size: 128  
+noise_dim: 100
+dim: 16  
+lr: 0.0001
+beta_1: 0.9
+beta_2: 0.99
+img_size: [128, 128, 1]
+epochs: 20000  
+print_every: 5000
+
+# WandB settings
+wandb:
+  project: "cryoEM-WGAN"
+  architecture: "Wasserstein GAN"
+  dataset: "10K_Particles"
+  run_id: '20K epochs, batch_size 128'
