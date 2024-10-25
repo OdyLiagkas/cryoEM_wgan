@@ -114,8 +114,7 @@ class Trainer():
             s = (s[-2],s[-1])
             if 0.025*(self.epoch+1) > s[0]:
                 self.gaussian_filter = False
-            self.gw = _get_gaussian_weights(s, 0.025*(self.epoch+1))
-
+            self.gw = _get_gaussian_weights(s, max(1, int(0.025*(self.epoch+1))))
         for i, data in enumerate(data_loader):
             self.num_steps += 1
             #Apply gaussian filter
@@ -139,6 +138,7 @@ class Trainer():
             
         num_samples = 1   # CAN BE CHANGED TO BE A PARAMETER 
         generated_image = self.sample(num_samples=num_samples, sampling=True)
+        print(normalize_array(generated_image).min(), normalize_array(generated_image).max(), normalize_array(generated_image).mean(), normalize_array(generated_image).std())
         fig = normalize_array(generated_image) * 255
 
         epoch_end_time = time.time()  
