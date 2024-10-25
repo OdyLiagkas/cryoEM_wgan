@@ -20,6 +20,7 @@ class CustomImageDataset(Dataset):
                 image = self.transform(image)
             else:
                 image = (np.array(image)/255)[None, :, :]
+            print(image.shape)
             self.particles.append(image)
         self.particles = np.array(self.particles)
         if standarization:
