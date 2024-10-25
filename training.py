@@ -138,7 +138,6 @@ class Trainer():
             
         num_samples = 1   # CAN BE CHANGED TO BE A PARAMETER 
         generated_image = self.sample(num_samples=num_samples, sampling=True)
-        print(normalize_array(generated_image).min(), normalize_array(generated_image).max(), normalize_array(generated_image).mean(), normalize_array(generated_image).std())
         fig = normalize_array(generated_image) * 255
 
         epoch_end_time = time.time()  
