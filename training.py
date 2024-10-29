@@ -26,9 +26,9 @@ class Trainer():
         self.cumulative_time = 0  # Initialize cumulative time tracking
         self.gaussian_filter = gaussian_filter
         if self.gaussian_filter:
-            self.standarize = True
+            self.normalize = True
         else:
-            self.standarize = False
+            self.normalize = False
 
         if self.device:
             self.G.to(self.device)
@@ -112,17 +112,17 @@ class Trainer():
         if self.gaussian_filter:
             s = data_loader.dataset.particles.shape
             s = (s[-2],s[-1])
-            if 0.025*(self.epoch+1) > s[0]:
+            if self.gaussian_filter*(self.epoch+1) > s[0]:
                 self.gaussian_filter = False
-            self.gw = _get_gaussian_weights(s, max(1, int(0.025*(self.epoch+1))))
+            self.gw = _get_gaussian_weights(s, max(1, int(self.gaussian_filter*(self.epoch+1))))
         for i, data in enumerate(data_loader):
             self.num_steps += 1
             #Apply gaussian filter
             if self.gaussian_filter:
                 data = gaussian(data, 0, weights=self.gw)
             #Standarize data
-            if self.standarize:
-                data = self.batch_standarization(data)#normalize_tensor(data)
+            if self.normalize:
+                data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
             #Train discriminator
             self._critic_train_iteration(data)
             #Train generator
