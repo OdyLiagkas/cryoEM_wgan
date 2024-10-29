@@ -81,7 +81,6 @@ def _to_space(image_fft: Tensor) -> Tensor:
     img = img_ifft.real.clamp(0, 1)
     return img
 
-
 def ideal_bandpass(image: Tensor, D0: int, lowpass: bool = True) -> Tensor:
     """Low-pass filter for images.
 

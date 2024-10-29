@@ -57,14 +57,23 @@ class Discriminator(nn.Module):
         self.img_size = img_size
 
         self.image_to_features = nn.Sequential(
+            #128
             nn.Conv2d(self.img_size[2], dim, 4, 2, 1),
             nn.LeakyReLU(0.2),
+            #64
             nn.Conv2d(dim, 2 * dim, 4, 2, 1),
+            #Norm Layer
+            #nn.LayerNorm([2 * dim, self.img_size[2]/2**2, self.img_size[2]/2**2]),
             nn.LeakyReLU(0.2),
+            #32
             nn.Conv2d(2 * dim, 4 * dim, 4, 2, 1),
+            #Norm Layer
+            #nn.LayerNorm([4 * dim, self.img_size[2]/2**3, self.img_size[2]/2**3]),
             nn.LeakyReLU(0.2),
+            #16
             nn.Conv2d(4 * dim, 8 * dim, 4, 2, 1),
-            nn.Sigmoid()
+            #8
+            #nn.Sigmoid()
         )
 
         # 4 convolutions of stride 2, i.e. halving of size everytime
