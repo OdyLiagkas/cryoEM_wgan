@@ -26,4 +26,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: '16: 10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 7 Critic Iterations'
+  run_id: '17: 10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 7 Critic Iterations'
