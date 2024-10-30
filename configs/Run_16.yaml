@@ -1,11 +1,11 @@
 # config.yaml
 
 # Device settings
-device: "cuda:0"  # If available, otherwise CPU will be used in the script
+device: "cuda:3"  # If available, otherwise CPU will be used in the script
 
 # Path to dataset
 data_paths:
-  - "../pngs/"
+  - "/home/azamanos/projects/data/sim_particles/"
 
 # Training parameters
 batch_size: 32  
@@ -26,4 +26,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: '10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 3 Critic Iterations'
+  run_id: '16_10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 3 Critic Iterations'
