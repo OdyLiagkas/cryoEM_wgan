@@ -19,11 +19,11 @@ epochs: 10000
 print_every: 5000
 standarization: False
 gaussian_filter: 0.025
-critic_iterations: 3
+critic_iterations: 4
 gp_weight: 10
 # WandB settings
 wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: '16_10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 3 Critic Iterations'
+  run_id: '16: 10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 4 Critic Iterations'
