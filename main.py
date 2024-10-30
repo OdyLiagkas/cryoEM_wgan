@@ -57,7 +57,7 @@ def main(config):
 
     # Train model
     trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer,
-                      device=device, print_every=config['print_every'], gaussian_filter = config['gaussian_filter'])
+                      device=device, print_every=config['print_every'], gaussian_filter = config['gaussian_filter'], critic_iterations=config['critic_iterations'], gp_weight=config['gp_weight']) 
     trainer.train(data_loader, epochs, save_training_gif=False)
 
     # Plot 4 generated images on wandb
