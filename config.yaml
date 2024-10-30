@@ -19,6 +19,8 @@ epochs: 10000
 print_every: 5000
 standarization: False
 gaussian_filter: 0.025
+critic_iterations: 5
+gp_weight: 10
 # WandB settings
 wandb:
   project: "cryoEM-WGAN"
