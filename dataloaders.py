@@ -6,12 +6,11 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 class CustomImageDataset(Dataset):
-    def __init__(self, img_dir, transform=None, target_transform=None, standarization=False, normalize_for_tanh=False):
+    def __init__(self, img_dir, transform=None, target_transform=None, standarization=False):
         self.particles = []
         self.img_dir = img_dir
         self.transform = transform
         self.target_transform = target_transform
-        self.normalize_for_tanh = normalize_for_tanh
 
         # List all files in the directory (assuming they are images)
         self.img_names = os.listdir(img_dir)
@@ -24,8 +23,8 @@ class CustomImageDataset(Dataset):
                 image = (np.array(image) / 255)[None, :, :]  # Normalize to [0, 1]
             
             # Normalize to [-1, 1] if specified
-            if self.normalize_for_tanh:
-                image = (image - 0.5) * 2  # Convert [0, 1] to [-1, 1]
+            #if self.normalize_for_tanh:
+                #image = (image - 0.5) * 2  # Convert [0, 1] to [-1, 1]
 
             self.particles.append(np.array(image))
         

@@ -179,9 +179,14 @@ class Discriminator(nn.Module):
             nn.Conv2d(512, 1, 4, 1, 0, bias=False),
         )
 
-    def forward(self, x):
-        x = self.net(x)
-        return (
-            x if self.final_activation is None else self.final_activation(x)
+        self.features_to_prob = nn.Sequential(
+            nn.Linear(4, 1),
+            nn.Sigmoid()
         )
+
+    def forward(self, x):
+        batch_size = x.shape[0]
+        x = self.net(x)
+        x = x.view(batch_size, -1)
+        return self.features_to_prob(x)
     
