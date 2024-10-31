@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=5000,
-                 device='cpu', gaussian_filter = False):
+                 device='cpu', epoch100=False, gaussian_filter = False):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
@@ -20,6 +20,7 @@ class Trainer():
         self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}  # Track losses for each epoch
         self.num_steps = 0
         self.device = device
+        self.epoch100 = epoch100
         self.gp_weight = gp_weight
         self.critic_iterations = critic_iterations
         self.print_every = print_every
@@ -146,35 +147,9 @@ class Trainer():
         print(f"Epoch completed in {epoch_duration} minutes.")
         print(f"Cumulative training time: {self.cumulative_time} minutes.")
 
-        # Log the mean of losses for this epoch to wandb
-        log_dict = {
-            "Critic Loss (mean)": np.mean(self.epoch_losses['D']),
-            "Gradient Penalty (mean)": np.mean(self.epoch_losses['GP']),
-            "Gradient Norm (mean)": np.mean(self.epoch_losses['gradient_norm']),
-            "Generator Loss (mean)" : np.mean(self.epoch_losses['G']),
-            "Cumulative Time (minutes)": self.cumulative_time
-            #"Generated Image": wandb.Image(fig)
-        }
-
-        wandb.log(log_dict)
-
-        # Reset epoch loss tracker
-        self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
-
-def train(self, data_loader, epochs, save_training_gif=True):
-    if save_training_gif:
-        fixed_latents = self.G.sample_latent(64)
-        if self.device:
-            fixed_latents = fixed_latents.to(self.device)
-        training_progress_images = []
-
-    for epoch in range(epochs):
-        self.epoch = epoch
-        print(f"\nEpoch {epoch + 1}/{epochs}")
-        self._train_epoch(data_loader)
 
         # Log generated images every 100 epochs
-        if (epoch + 1) % 100 == 0:
+        if (self.epoch100 == True):
             # Sample 16 images (4x4 grid)
             num_samples = 16  
             generated_images = []
@@ -194,8 +169,47 @@ def train(self, data_loader, epochs, save_training_gif=True):
             # Convert to numpy to log on WandB
             grid_np = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
             
-            # Log the grid of images to WandB
-            wandb.log({"Generated Images Grid": wandb.Image(grid_np)})
+            log_dict = {
+                "Critic Loss (mean)": np.mean(self.epoch_losses['D']),
+                "Gradient Penalty (mean)": np.mean(self.epoch_losses['GP']),
+                "Gradient Norm (mean)": np.mean(self.epoch_losses['gradient_norm']),
+                "Generator Loss (mean)" : np.mean(self.epoch_losses['G']),
+                "Cumulative Time (minutes)": self.cumulative_time,
+                "Generated Images Grid": wandb.Image(grid_np)
+            }
+
+
+        else:
+            # Log the mean of losses for this epoch to wandb
+            log_dict = {
+                "Critic Loss (mean)": np.mean(self.epoch_losses['D']),
+                "Gradient Penalty (mean)": np.mean(self.epoch_losses['GP']),
+                "Gradient Norm (mean)": np.mean(self.epoch_losses['gradient_norm']),
+                "Generator Loss (mean)" : np.mean(self.epoch_losses['G']),
+                "Cumulative Time (minutes)": self.cumulative_time
+            }
+
+        wandb.log(log_dict)
+
+        # Reset epoch loss tracker
+        self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
+
+def train(self, data_loader, epochs, save_training_gif=True):
+    if save_training_gif:
+        fixed_latents = self.G.sample_latent(64)
+        if self.device:
+            fixed_latents = fixed_latents.to(self.device)
+        training_progress_images = []
+
+    for epoch in range(epochs):
+        self.epoch = epoch
+        print(f"\nEpoch {epoch + 1}/{epochs}")
+        self._train_epoch(data_loader)
+
+        if(epoch+1)%100 == 0:
+            self.epoch100=True
+        else:
+            self.epoch100=False
 
         if save_training_gif:
             img_grid = make_grid(self.G(fixed_latents).cpu())
