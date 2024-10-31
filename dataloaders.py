@@ -66,4 +66,4 @@ def get_dataloader(paths_to_data, batch_size, standarization=False, normalize_fo
         normalize_for_tanh=normalize_for_tanh
     )
 
-    return DataLoader(particle_dset, batch_size=batch_size, shuffle=True, num_workers=1)  # Changed to 1 for offline testing!!
+    return DataLoader(particle_dset, batch_size=batch_size, shuffle=True, num_workers=8) 
