@@ -1,0 +1,36 @@
+{
+  "os": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.0",
+  "startedAt": "2024-10-31T12:21:45.900349Z",
+  "args": [
+    "-a",
+    "config.yaml"
+  ],
+  "program": "C:\\Users\\dell\\Desktop\\git\\main.py",
+  "codePath": "main.py",
+  "git": {
+    "remote": "https://github.com/OdyLiagkas/cryoEM_wgan",
+    "commit": "205f6512d75cebdde9fe9c7efbdc9b769c0b2633"
+  },
+  "email": "o.liagkas@athenarc.gr",
+  "root": "C:\\Users\\dell\\Desktop\\git",
+  "host": "Ody",
+  "username": "dell",
+  "executable": "C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "codePathLocal": "main.py",
+  "cpu_count": 4,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "254764089344",
+      "used": "118064447488"
+    }
+  },
+  "memory": {
+    "total": "8354672640"
+  },
+  "cpu": {
+    "count": 4,
+    "countLogical": 8
+  }
+}

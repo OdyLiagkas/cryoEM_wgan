@@ -6,11 +6,13 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 class CustomImageDataset(Dataset):
-    def __init__(self, img_dir, transform=None, target_transform=None, standarization = False):
+    def __init__(self, img_dir, transform=None, target_transform=None, standarization=False, normalize_for_tanh=False):
         self.particles = []
         self.img_dir = img_dir
         self.transform = transform
         self.target_transform = target_transform
+        self.normalize_for_tanh = normalize_for_tanh
+
         # List all files in the directory (assuming they are images)
         self.img_names = os.listdir(img_dir)
         for imname in self.img_names:
@@ -19,18 +21,27 @@ class CustomImageDataset(Dataset):
             if self.transform:
                 image = self.transform(image)
             else:
-                image = (np.array(image)/255)[None, :, :]
+                image = (np.array(image) / 255)[None, :, :]  # Normalize to [0, 1]
+            
+            # Normalize to [-1, 1] if specified
+            if self.normalize_for_tanh:
+                image = (image - 0.5) * 2  # Convert [0, 1] to [-1, 1]
+
             self.particles.append(np.array(image))
+        
         self.particles = np.array(self.particles)
+        
+        # Standardization if specified
         if standarization:
-            self.particles = (self.particles - self.particles.mean())/self.particles.std()
+            self.particles = (self.particles - self.particles.mean()) / self.particles.std()
+
     def __len__(self):
         return len(self.img_names)
 
     def __getitem__(self, idx):
         return self.particles[idx]
 
-def get_dataloader(paths_to_data, batch_size, standarization = False):
+def get_dataloader(paths_to_data, batch_size, standarization=False, normalize_for_tanh=False):
     """Loads datasets from the provided list of paths.
 
     paths_to_data : list
@@ -48,7 +59,11 @@ def get_dataloader(paths_to_data, batch_size, standarization = False):
     selected_path = paths_to_data[0]
 
     # Get dataset
-    particle_dset = CustomImageDataset(img_dir=selected_path, transform=transform, standarization=standarization)
+    particle_dset = CustomImageDataset(
+        img_dir=selected_path,
+        transform=transform,
+        standarization=standarization,
+        normalize_for_tanh=normalize_for_tanh
+    )
 
-
-    return DataLoader(particle_dset, batch_size=batch_size, shuffle=True,num_workers=8)
+    return DataLoader(particle_dset, batch_size=batch_size, shuffle=True, num_workers=1)  # Changed to 1 for offline testing!!

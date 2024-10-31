@@ -11,6 +11,9 @@ from utils import normalize_array
 import torchvision.utils as vutils  # Import make_grid
 import numpy as np
 
+from utils import LayerNorm2d, PixelNorm # FOR ZOO WGANgp
+from utils import init_weight 
+
 # Function to load config from YAML file
 def load_config(yaml_file):
     with open(yaml_file, 'r') as file:
@@ -45,8 +48,16 @@ def main(config):
     data_loader = get_dataloader(paths_to_data=data_paths, batch_size=batch_size, standarization=config['standarization'])
 
     # Initialize Generator and Discriminator
-    generator = Generator(img_size=img_size, latent_dim=noise_dim, dim=dim)
-    discriminator = Discriminator(img_size=img_size, dim=dim)
+    generator = Generator(z_dim=noise_dim,
+            out_ch=1,#for grayscale
+            norm_layer=LayerNorm2d,
+            final_activation=torch.tanh)
+    
+    discriminator = Discriminator(1, norm_layer=LayerNorm2d)
+
+    #ADDED weight initialization as per the zoo gan file:
+    generator.apply(init_weight)
+    discriminator.apply(init_weight)
 
     print(generator)
     print(discriminator)

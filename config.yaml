@@ -15,7 +15,7 @@ lr: 0.0001
 beta_1: 0.9
 beta_2: 0.99
 img_size: [128, 128, 1]
-epochs: 10000  
+epochs: 10  
 print_every: 5000
 standarization: False
 gaussian_filter: 0.025
@@ -26,4 +26,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN"
   dataset: "10K_Particles"
-  run_id: '19: 10K epochs, batch_size 32 gaussian filter=0.025 normalization (one disc sigmoid), 9 Critic Iterations'
+  run_id: 'OFFLINE TESTING'

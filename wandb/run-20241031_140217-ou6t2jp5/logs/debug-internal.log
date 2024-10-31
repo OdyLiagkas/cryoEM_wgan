@@ -1,0 +1,16 @@
+{"time":"2024-10-31T14:02:18.0211576+02:00","level":"INFO","msg":"using version","core version":"0.18.5"}
+{"time":"2024-10-31T14:02:18.0211576+02:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\dell\\Desktop\\git\\wandb\\run-20241031_140217-ou6t2jp5\\logs\\debug-core.log"}
+{"time":"2024-10-31T14:02:18.152216+02:00","level":"INFO","msg":"created new stream","id":"ou6t2jp5"}
+{"time":"2024-10-31T14:02:18.152762+02:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"ou6t2jp5"}}
+{"time":"2024-10-31T14:02:18.152762+02:00","level":"INFO","msg":"stream: started","id":"ou6t2jp5"}
+{"time":"2024-10-31T14:02:18.152762+02:00","level":"INFO","msg":"handler: started","stream_id":{"value":"ou6t2jp5"}}
+{"time":"2024-10-31T14:02:18.152762+02:00","level":"INFO","msg":"sender: started","stream_id":"ou6t2jp5"}
+{"time":"2024-10-31T14:02:18.60736+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-31T14:02:24.2504123+02:00","level":"INFO","msg":"stream: closing","id":"ou6t2jp5"}
+{"time":"2024-10-31T14:02:24.2514976+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-31T14:02:24.2561209+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-31T14:02:25.73114+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-31T14:02:26.1093112+02:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"ou6t2jp5"}}
+{"time":"2024-10-31T14:02:26.1093112+02:00","level":"INFO","msg":"sender: closed","stream_id":"ou6t2jp5"}
+{"time":"2024-10-31T14:02:26.1093112+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"ou6t2jp5"}}
+{"time":"2024-10-31T14:02:26.109817+02:00","level":"INFO","msg":"stream: closed","id":"ou6t2jp5"}
