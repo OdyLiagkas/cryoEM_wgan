@@ -180,15 +180,15 @@ class Discriminator(nn.Module):
         )
 
         self.features_to_prob = nn.Sequential(
-            nn.Linear(4, 1),
+            #nn.Linear(4, 1),
             nn.Sigmoid()
         )
 
     def forward(self, x):
         batch_size = x.shape[0]
         x = self.net(x)
-        print(x.shape)
+        #print(x.shape)
         x = x.view(batch_size, -1)
-        print(x.shape)
+        #print(x.shape)
         return self.features_to_prob(x)
     
