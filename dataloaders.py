@@ -61,8 +61,8 @@ def get_dataloader(paths_to_data, batch_size, standarization=False):
     particle_dset = CustomImageDataset(
         img_dir=selected_path,
         transform=transform,
-        standarization=standarization,
-        normalize_for_tanh=normalize_for_tanh
+        standarization=standarization
+        
     )
 
     return DataLoader(particle_dset, batch_size=batch_size, shuffle=True, num_workers=8) 
