@@ -40,7 +40,7 @@ class CustomImageDataset(Dataset):
     def __getitem__(self, idx):
         return self.particles[idx]
 
-def get_dataloader(paths_to_data, batch_size, standarization=False, normalize_for_tanh=False):
+def get_dataloader(paths_to_data, batch_size, standarization=False):
     """Loads datasets from the provided list of paths.
 
     paths_to_data : list
