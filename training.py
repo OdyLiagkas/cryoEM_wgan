@@ -135,11 +135,11 @@ class Trainer():
                 if self.num_steps > self.critic_iterations:
                     print(f"G: {self.losses['G'][-1]}")
 
-            
+        '''   REMOVED PLOTTING EVERY EPOCH 
         num_samples = 1   # CAN BE CHANGED TO BE A PARAMETER 
         generated_image = self.sample(num_samples=num_samples, sampling=True)
         fig = normalize_array(generated_image) * 255
-
+'''
         epoch_end_time = time.time()  
         epoch_duration = round((epoch_end_time - epoch_start_time) / 60, 2)  
         self.cumulative_time += epoch_duration  
@@ -152,8 +152,8 @@ class Trainer():
             "Gradient Penalty (mean)": np.mean(self.epoch_losses['GP']),
             "Gradient Norm (mean)": np.mean(self.epoch_losses['gradient_norm']),
             "Generator Loss (mean)" : np.mean(self.epoch_losses['G']),
-            "Cumulative Time (minutes)": self.cumulative_time,
-            "Generated Image": wandb.Image(fig)
+            "Cumulative Time (minutes)": self.cumulative_time
+            #"Generated Image": wandb.Image(fig)
         }
 
         wandb.log(log_dict)
