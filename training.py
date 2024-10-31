@@ -36,6 +36,8 @@ class Trainer():
             self.D.to(self.device)
 
     def _critic_train_iteration(self, data):
+        self.G.eval()
+        self.D.train()
         """Train the discriminator."""
         batch_size = data.size(0)
         generated_data = self.sample_generator(batch_size)
@@ -58,6 +60,8 @@ class Trainer():
         self.epoch_losses['D'].append(d_loss.item())  # Store epoch loss
 
     def _generator_train_iteration(self, data):
+        self.G.train()
+        self.D.eval()
         """Train the generator."""
         self.G_opt.zero_grad()
 
