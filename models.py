@@ -187,6 +187,8 @@ class Discriminator(nn.Module):
     def forward(self, x):
         batch_size = x.shape[0]
         x = self.net(x)
+        print(x.shape)
         x = x.view(batch_size, -1)
+        print(x.shape)
         return self.features_to_prob(x)
     
