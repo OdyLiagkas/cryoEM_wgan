@@ -161,26 +161,50 @@ class Trainer():
         # Reset epoch loss tracker
         self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
 
-    def train(self, data_loader, epochs, save_training_gif=True):
+def train(self, data_loader, epochs, save_training_gif=True):
+    if save_training_gif:
+        fixed_latents = self.G.sample_latent(64)
+        if self.device:
+            fixed_latents = fixed_latents.to(self.device)
+        training_progress_images = []
+
+    for epoch in range(epochs):
+        self.epoch = epoch
+        print(f"\nEpoch {epoch + 1}/{epochs}")
+        self._train_epoch(data_loader)
+
+        # Log generated images every 100 epochs
+        if (epoch + 1) % 100 == 0:
+            # Sample 16 images (4x4 grid)
+            num_samples = 16  
+            generated_images = []
+
+            for _ in range(num_samples):
+                generated_image = self.sample(num_samples=1, sampling=True)
+                generated_image = np.expand_dims(generated_image, axis=(0, 1))  # Adding batch and channel dimensions
+                generated_image_tensor = torch.tensor(generated_image).to(self.device)  # Convert numpy to tensor
+                generated_images.append(generated_image_tensor)
+
+            # Concatenate the tensors along batch dimension
+            generated_images = torch.cat(generated_images, dim=0)
+
+            # Create a 4x4 grid
+            grid = make_grid(generated_images, nrow=4, normalize=True, scale_each=True)
+
+            # Convert to numpy to log on WandB
+            grid_np = grid.permute(1, 2, 0).cpu().numpy() * 255  # Permute to HWC and scale to [0, 255]
+            
+            # Log the grid of images to WandB
+            wandb.log({"Generated Images Grid": wandb.Image(grid_np)})
+
         if save_training_gif:
-            fixed_latents = self.G.sample_latent(64)
-            if self.device:
-                fixed_latents = fixed_latents.to(self.device)
-            training_progress_images = []
+            img_grid = make_grid(self.G(fixed_latents).cpu())
+            img_grid = np.transpose(img_grid.numpy(), (1, 2, 0))
+            img_grid = (img_grid * 255).astype(np.uint8)
+            training_progress_images.append(img_grid)
 
-        for epoch in range(epochs):
-            self.epoch = epoch
-            print(f"\nEpoch {epoch + 1}/{epochs}")
-            self._train_epoch(data_loader)
-
-            if save_training_gif:
-                img_grid = make_grid(self.G(fixed_latents).cpu())
-                img_grid = np.transpose(img_grid.numpy(), (1, 2, 0))
-                img_grid = (img_grid * 255).astype(np.uint8)
-                training_progress_images.append(img_grid)
-
-        if save_training_gif:
-            imageio.mimsave(f'./gifs/training_{epochs}_epochs.gif', training_progress_images)
+    if save_training_gif:
+        imageio.mimsave(f'./gifs/training_{epochs}_epochs.gif', training_progress_images)
 
     def sample_generator(self, num_samples):
         latent_samples = self.G.sample_latent(num_samples)
