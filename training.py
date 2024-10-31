@@ -194,31 +194,31 @@ class Trainer():
         # Reset epoch loss tracker
         self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
 
-def train(self, data_loader, epochs, save_training_gif=True):
-    if save_training_gif:
-        fixed_latents = self.G.sample_latent(64)
-        if self.device:
-            fixed_latents = fixed_latents.to(self.device)
-        training_progress_images = []
+    def train(self, data_loader, epochs, save_training_gif=True):
+        if save_training_gif:
+            fixed_latents = self.G.sample_latent(64)
+            if self.device:
+                fixed_latents = fixed_latents.to(self.device)
+            training_progress_images = []
 
-    for epoch in range(epochs):
-        self.epoch = epoch
-        print(f"\nEpoch {epoch + 1}/{epochs}")
-        self._train_epoch(data_loader)
+        for epoch in range(epochs):
+            self.epoch = epoch
+            print(f"\nEpoch {epoch + 1}/{epochs}")
+            self._train_epoch(data_loader)
 
-        if(epoch+1)%100 == 0:
-            self.epoch100=True
-        else:
-            self.epoch100=False
+            if(epoch+1)%100 == 0:
+                self.epoch100=True
+            else:
+                self.epoch100=False
+
+            if save_training_gif:
+                img_grid = make_grid(self.G(fixed_latents).cpu())
+                img_grid = np.transpose(img_grid.numpy(), (1, 2, 0))
+                img_grid = (img_grid * 255).astype(np.uint8)
+                training_progress_images.append(img_grid)
 
         if save_training_gif:
-            img_grid = make_grid(self.G(fixed_latents).cpu())
-            img_grid = np.transpose(img_grid.numpy(), (1, 2, 0))
-            img_grid = (img_grid * 255).astype(np.uint8)
-            training_progress_images.append(img_grid)
-
-    if save_training_gif:
-        imageio.mimsave(f'./gifs/training_{epochs}_epochs.gif', training_progress_images)
+            imageio.mimsave(f'./gifs/training_{epochs}_epochs.gif', training_progress_images)
 
     def sample_generator(self, num_samples):
         latent_samples = self.G.sample_latent(num_samples)
