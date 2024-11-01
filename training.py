@@ -241,7 +241,7 @@ class Trainer():
         return generated_data.cpu().numpy()[:, 0, :, :]
 
     def save_model(self, ckpt_dir: str, current_ep: int):
-        out_path = os.path.join(ckpt_dir, f"netG-{(5000):03d}.tar")
+        out_path = os.path.join(ckpt_dir, f"netG-{(current_ep):03d}.tar")
         self._ckpt(self.G, out_path)
 
         out_path = os.path.join(ckpt_dir, f"netD-{(current_ep):03d}.tar")
