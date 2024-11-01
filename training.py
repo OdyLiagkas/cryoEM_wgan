@@ -1,3 +1,4 @@
+import os
 import time  
 import imageio
 import numpy as np
@@ -11,7 +12,8 @@ import matplotlib.pyplot as plt
 class Trainer():
     def __init__(self, generator, discriminator, gen_optimizer, dis_optimizer,
                  gp_weight=10, critic_iterations=5, print_every=5000,
-                 device='cpu', epoch100=False, gaussian_filter = False):
+                 device='cpu', epoch100=False, gaussian_filter = False,
+                 ckpt_dir=False, save_checkpoint_every=False):
         self.G = generator
         self.G_opt = gen_optimizer
         self.D = discriminator
@@ -26,6 +28,7 @@ class Trainer():
         self.print_every = print_every
         self.cumulative_time = 0  # Initialize cumulative time tracking
         self.gaussian_filter = gaussian_filter
+        self.ckpt_dir, self.save_checkpoint_every = ckpt_dir, save_checkpoint_every
         if self.gaussian_filter:
             self.normalize = True
         else:
@@ -117,7 +120,7 @@ class Trainer():
         if self.gaussian_filter:
             s = data_loader.dataset.particles.shape
             s = (s[-2],s[-1])
-            if self.gaussian_filter*(self.epoch+1) > s[0]:
+            if self.gaussian_filter*(self.epoch+1) > s[0]//2:
                 self.gaussian_filter = False
             self.gw = _get_gaussian_weights(s, max(1, int(self.gaussian_filter*(self.epoch+1))))
         for i, data in enumerate(data_loader):
@@ -214,6 +217,9 @@ class Trainer():
                 self.epoch100=True
             else:
                 self.epoch100=False
+            #Save epoch
+            if not (epoch+1)%self.save_checkpoint_every:
+                save_model(self.ckpt_dir, epoch+1)
 
             if save_training_gif:
                 img_grid = make_grid(self.G(fixed_latents).cpu())
@@ -240,3 +246,21 @@ class Trainer():
             return generated_data.cpu().numpy()[0, 0, :, :]
 
         return generated_data.cpu().numpy()[:, 0, :, :]
+
+    def save_model(self, ckpt_dir: str, current_ep: int):
+        out_path = os.path.join(ckpt_dir, f"netG-{(current_ep+1):03d}.tar")
+        self._ckpt(self.G, out_path)
+
+        out_path = os.path.join(ckpt_dir, f"netD-{(current_ep+1):03d}.tar")
+        self._ckpt(self.D, out_path)
+
+    def _ckpt(self, model, path):
+        """
+        _ckpt makes checkpoint
+
+        Args:
+            model (nn.Module): module to save
+            path (str): save path
+        """
+        if isinstance(model, torch.nn.DataParallel):
+            torch.save(model.module.state_dict(), path)

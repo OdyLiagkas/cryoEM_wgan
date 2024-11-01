@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.optim as optim
 from dataloaders import get_dataloader
@@ -35,7 +36,10 @@ def main(config):
     betas = (beta_1, beta_2)
     img_size = tuple(config['img_size'])  # Convert list to tuple
     epochs = config['epochs']
-    
+    config['checkpoint_dir'] = f"./checkpoints/{config['checkpoint_dir']}"
+    # Check if the directory exists, and create it if it doesn't
+    if not os.path.exists(config['checkpoint_dir']):
+        os.mkdir(config['checkpoint_dir'])
     wandb.init(
         project=config['wandb']['project'],
         config=config,
@@ -67,8 +71,9 @@ def main(config):
     D_optimizer = optim.Adam(discriminator.parameters(), lr=lr, betas=betas)
 
     # Train model
-    trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer,
-                      device=device, print_every=config['print_every'], gaussian_filter = config['gaussian_filter'], critic_iterations=config['critic_iterations'], gp_weight=config['gp_weight']) 
+    trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer, critic_iterations=config['critic_iterations'], gp_weight=config['gp_weight'],
+                      device=device, print_every=config['print_every'], gaussian_filter = config['gaussian_filter'],
+                      ckpt_dir=config['checkpoint_dir'], save_checkpoint_every=config['save_checkpoint_every'])
     trainer.train(data_loader, epochs, save_training_gif=False)
 
     # Plot 4 generated images on wandb
