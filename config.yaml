@@ -8,7 +8,7 @@ data_paths:
   - "../pngs/"
 
 # Training parameters
-batch_size: 128 
+batch_size: 32 
 noise_dim: 100
 dim: 16  
 lr: 0.0001
@@ -26,4 +26,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN_from_Zoo"
   dataset: "10K_Particles"
-  run_id: '24: batch size = 128, critic_iterations=5, gaussian_filter=0.025'
+  run_id: '24: lr = 5e-4, batch size = 32, critic_iterations=5, gaussian_filter=0.025'
