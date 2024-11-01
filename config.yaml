@@ -11,7 +11,7 @@ data_paths:
 batch_size: 32 
 noise_dim: 100
 dim: 16  
-lr: 0.0001
+lr: 0.0005
 beta_1: 0.9
 beta_2: 0.99
 img_size: [128, 128, 1]
