@@ -116,7 +116,7 @@ class Trainer():
             s = (s[-2],s[-1])
             if self.gaussian_filter*(self.epoch+1) > s[0]//2:
                 self.gaussian_filter = False
-            self.gw = _get_gaussian_weights(s, max(1, int(self.gaussian_filter*(self.epoch+1))))
+            self.gw = _get_gaussian_weights(s, max(1, int(self.gaussian_filter*(self.epoch+1))), device=self.device)
         for i, data in enumerate(data_loader):
             data = data.to(self.device)
             self.num_steps += 1
