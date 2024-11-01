@@ -34,9 +34,8 @@ class Trainer():
         else:
             self.normalize = False
 
-        if self.device:
-            self.G.to(self.device)
-            self.D.to(self.device)
+        self.G.to(self.device)
+        self.D.to(self.device)
 
     def _critic_train_iteration(self, data):
         self.G.eval()
@@ -45,8 +44,7 @@ class Trainer():
         batch_size = data.size(0)
         generated_data = self.sample_generator(batch_size)
 
-        if self.device:
-            data = data.to(self.device)
+        #data = data.to(self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
 
@@ -83,22 +81,18 @@ class Trainer():
         batch_size = real_data.size(0)
 
         alpha = torch.rand(batch_size, 1, 1, 1).expand_as(real_data)
-        if self.device:
-            alpha = alpha.to(self.device)
+        alpha = alpha.to(self.device)
         interpolated = alpha * real_data + (1 - alpha) * generated_data
         interpolated.requires_grad_(True)
 
-        if self.device:
-            interpolated = interpolated.to(self.device)
+        interpolated = interpolated.to(self.device)
 
         prob_interpolated = self.D(interpolated)
 
         gradients = torch.autograd.grad(
             outputs=prob_interpolated, 
             inputs=interpolated,
-            grad_outputs=torch.ones(prob_interpolated.size()).to(self.device) if self.device else torch.ones(prob_interpolated.size()),
-            create_graph=True, retain_graph=True
-        )[0]
+            grad_outputs=torch.ones(prob_interpolated.size()).to(self.device), create_graph=True, retain_graph=True)[0]
 
         gradients = gradients.view(batch_size, -1)
         gradient_norm = gradients.norm(2, dim=1).mean().item()  
@@ -124,6 +118,7 @@ class Trainer():
                 self.gaussian_filter = False
             self.gw = _get_gaussian_weights(s, max(1, int(self.gaussian_filter*(self.epoch+1))))
         for i, data in enumerate(data_loader):
+            data = data.to(self.device)
             self.num_steps += 1
             #Apply gaussian filter
             if self.gaussian_filter:
@@ -204,8 +199,7 @@ class Trainer():
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
             fixed_latents = self.G.sample_latent(64)
-            if self.device:
-                fixed_latents = fixed_latents.to(self.device)
+            fixed_latents = fixed_latents.to(self.device)
             training_progress_images = []
 
         for epoch in range(epochs):
@@ -232,8 +226,7 @@ class Trainer():
 
     def sample_generator(self, num_samples):
         latent_samples = self.G.sample_latent(num_samples)
-        if self.device:
-            latent_samples = latent_samples.to(self.device)
+        latent_samples = latent_samples.to(self.device)
         generated_data = self.G(latent_samples)
         return generated_data
 
