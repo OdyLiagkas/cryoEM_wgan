@@ -257,3 +257,5 @@ class Trainer():
         """
         if isinstance(model, torch.nn.DataParallel):
             torch.save(model.module.state_dict(), path)
+        else:
+            torch.save(model.state_dict(), path)
