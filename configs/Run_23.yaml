@@ -28,4 +28,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN_from_Zoo"
   dataset: "10K_Particles"
-  run_id: '21: Zoo WGAN 100K epochs, batch_size 64 gaussian filter=0.025 normalization critic_iterations=5'
+  run_id: '23: Zoo WGAN 100K epochs, batch_size 64 gaussian filter=0.025 normalization critic_iterations=5'
