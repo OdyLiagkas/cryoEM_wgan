@@ -1,29 +1,31 @@
 # config.yaml
 
 # Device settings
-device: "cuda:0"  # If available, otherwise CPU will be used in the script
+device: "cuda:2"  # If available, otherwise CPU will be used in the script
 
 # Path to dataset
 data_paths:
   - "../pngs/"
 
 # Training parameters
-batch_size: 32 
+batch_size: 32
 noise_dim: 100
 dim: 16  
 lr: 0.0005
 beta_1: 0.9
 beta_2: 0.99
 img_size: [128, 128, 1]
-epochs: 10000  
+epochs: 100000
 print_every: 5000
 standarization: False
 gaussian_filter: 0.025
 critic_iterations: 5
 gp_weight: 10
+checkpoint_dir: 24
+save_checkpoint_every: 5000
 # WandB settings
 wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN_from_Zoo"
   dataset: "10K_Particles"
-  run_id: '24: lr = 5e-4, batch size = 32, critic_iterations=5, gaussian_filter=0.025'
+  run_id: '24: lr= 5e-4, 100K epochs, batch_size=32 gaussian filter=0.025, normalization critic_iterations=5'
