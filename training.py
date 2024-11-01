@@ -213,7 +213,7 @@ class Trainer():
                 self.epoch100=False
             #Save epoch
             if not (epoch+1)%self.save_checkpoint_every:
-                save_model(self.ckpt_dir, epoch+1)
+                self.save_model(self.ckpt_dir, epoch+1)
 
             if save_training_gif:
                 img_grid = make_grid(self.G(fixed_latents).cpu())

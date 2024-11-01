@@ -22,7 +22,7 @@ gaussian_filter: 0.025
 critic_iterations: 5
 gp_weight: 10
 checkpoint_dir: 23
-save_checkpoint_every: 5000
+save_checkpoint_every: 1
 # WandB settings
 wandb:
   project: "cryoEM-WGAN"
