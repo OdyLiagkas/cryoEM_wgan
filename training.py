@@ -207,7 +207,7 @@ class Trainer():
             print(f"\nEpoch {epoch + 1}/{epochs}")
             self._train_epoch(data_loader)
 
-            if(epoch+1)%50 == 0:
+            if(epoch+1)%100 == 0:
                 self.epoch100=True
             else:
                 self.epoch100=False
