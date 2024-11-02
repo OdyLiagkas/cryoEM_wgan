@@ -196,6 +196,13 @@ class Trainer():
         # Reset epoch loss tracker
         self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
 
+    def save_model(self, ckpt_dir: str, current_ep: int):
+        out_path = os.path.join(ckpt_dir, f"netG-{(current_ep):03d}.tar")
+        self._ckpt(self.G, out_path)
+
+        out_path = os.path.join(ckpt_dir, f"netD-{(current_ep):03d}.tar")
+        self._ckpt(self.D, out_path)
+    
     def train(self, data_loader, epochs, save_training_gif=True):
         if save_training_gif:
             fixed_latents = self.G.sample_latent(64)
@@ -239,13 +246,6 @@ class Trainer():
             return generated_data.cpu().numpy()[0, 0, :, :]
 
         return generated_data.cpu().numpy()[:, 0, :, :]
-
-    def save_model(self, ckpt_dir: str, current_ep: int):
-        out_path = os.path.join(ckpt_dir, f"netG-{(current_ep):03d}.tar")
-        self._ckpt(self.G, out_path)
-
-        out_path = os.path.join(ckpt_dir, f"netD-{(current_ep):03d}.tar")
-        self._ckpt(self.D, out_path)
 
     def _ckpt(self, model, path):
         """
