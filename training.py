@@ -43,8 +43,7 @@ class Trainer():
         """Train the discriminator."""
         batch_size = data.size(0)
         generated_data = self.sample_generator(batch_size)
-        print('generated')
-        print(generated_data.min(), generated_data.max())
+
         #data = data.to(self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
@@ -127,9 +126,9 @@ class Trainer():
             #Standarize data
             if self.normalize:
                 data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
+            #Bring data values into -1, 1
+            data = 2*(data-0.5)
             #Train discriminator
-            print('input')
-            print(data.min(), data.max())
             self._critic_train_iteration(data)
             #Train generator
             if self.num_steps % self.critic_iterations == 0:
