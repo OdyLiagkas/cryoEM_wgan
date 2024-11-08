@@ -5,9 +5,10 @@ from torch.autograd import Variable
 
 
 class Generator_(nn.Module):
-    def __init__(self, img_size, latent_dim, dim):
+    def __init__(self, img_size, latent_dim, dim, wscale=1):
         super(Generator, self).__init__()
 
+        self.wscale = wscale
         self.dim = dim
         self.latent_dim = latent_dim
         self.img_size = img_size
@@ -106,11 +107,13 @@ class Generator(nn.Module):
         out_ch=3,
         norm_layer=nn.BatchNorm2d,
         final_activation=None,
+        wscale = 1
     ):
         super().__init__()
         self.z_dim = z_dim
         self.out_ch = out_ch
         self.final_activation = final_activation
+        self.wscale = wscale
 
         self.net = nn.Sequential(
             # * Layer 1: 1x1
@@ -138,7 +141,11 @@ class Generator(nn.Module):
             # * Output: 128x128
         )
 
+        if self.wscale-1:
+            self.wscale = self.wscale/torch.sqrt(4 * 4 * self.z_dim)
+
     def forward(self, x):
+        self.net[0].weight *= self.wscale
         x = self.net(x)
         return (
             x if self.final_activation is None else self.final_activation(x)
