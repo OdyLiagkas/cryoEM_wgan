@@ -146,8 +146,9 @@ class Generator(nn.Module):
             self.wscale = self.wscale/np.sqrt(4 * 4 * self.z_dim)
 
     def forward(self, x):
-        with torch.no_grad():
-            self.net[0].weight = self.net[0].weight * self.wscale
+        #Scale first layers
+        self.net[0].weight = nn.Parameter(self.net[0].weight*self.wscale)
+
         x = self.net(x)
         return (
             x if self.final_activation is None else self.final_activation(x)
