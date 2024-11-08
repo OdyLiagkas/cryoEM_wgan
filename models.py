@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
@@ -142,7 +143,7 @@ class Generator(nn.Module):
         )
 
         if self.wscale-1:
-            self.wscale = self.wscale/torch.sqrt(4 * 4 * self.z_dim)
+            self.wscale = self.wscale/np.sqrt(4 * 4 * self.z_dim)
 
     def forward(self, x):
         self.net[0].weight *= self.wscale
