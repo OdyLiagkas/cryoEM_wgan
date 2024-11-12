@@ -15,7 +15,7 @@ lr: 0.0001
 beta_1: 0.9
 beta_2: 0.99
 img_size: [128, 128, 1]
-epochs: 100000
+epochs: 10000
 print_every: 5000
 standarization: False
 gaussian_filter: 0.025
@@ -28,4 +28,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN_from_Zoo"
   dataset: "10K_Particles"
-  run_id: '29: Zoo WGAN 100K epochs, batch_size 32 gaussian filter=0.025 normalization critic_iterations=5'
+  run_id: '29: Zoo WGAN z=512, 10K epochs, batch_size 32 gaussian filter=0.025 normalization critic_iterations=5'
