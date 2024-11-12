@@ -142,9 +142,6 @@ class Generator(nn.Module):
 
 
     def forward(self, x):
-        #Scale first layers
-        self.net[0].weight = nn.Parameter(self.net[0].weight)
-
         x = self.net(x)
         return (
             x if self.final_activation is None else self.final_activation(x)
