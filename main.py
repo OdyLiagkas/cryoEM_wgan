@@ -55,8 +55,8 @@ def main(config):
     generator = Generator(z_dim=noise_dim,
             out_ch=1,#for grayscale
             norm_layer=LayerNorm2d,
-            final_activation=torch.tanh,
-            wscale = config['wscale'])
+            final_activation=torch.tanh
+            )
     
     discriminator = Discriminator(1, norm_layer=LayerNorm2d)
 
