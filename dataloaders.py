@@ -52,6 +52,7 @@ def get_dataloader(paths_to_data, batch_size, standarization=False):
         transforms.CenterCrop(128),
         transforms.ToTensor()
     ])
+    transform = None
 
     # Use the first path from the list of data paths (can be adjusted if multiple datasets are needed)
     selected_path = paths_to_data[0]
