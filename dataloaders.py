@@ -21,7 +21,6 @@ class CustomImageDataset(Dataset):
                 image = self.transform(image)
             else:
                 image = (np.array(image) / 255)[None, :, :]  # Normalize to [0, 1]
-            
             # Normalize to [-1, 1] if specified
             #if self.normalize_for_tanh:
                 #image = (image - 0.5) * 2  # Convert [0, 1] to [-1, 1]

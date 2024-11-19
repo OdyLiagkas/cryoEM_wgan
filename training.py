@@ -126,6 +126,11 @@ class Trainer():
             #Standarize data
             if self.normalize:
                 data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
+            ###
+            pl = (256-data.shape[-1])//2
+            if pl:
+                data = np.pad(data[None, None], ((0,0),(0,0),(pl,pl),(pl,pl)))
+            data = np.pad(data, )
             #Bring data values into -1, 1
             data = 2*(data-0.5)
             #Train discriminator

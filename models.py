@@ -136,8 +136,12 @@ class Generator(nn.Module):
             norm_layer(32),
             nn.ReLU(),
             # * Layer 6: 64x64
-            nn.ConvTranspose2d(32, self.out_ch, 4, 2, 1, bias=False),
-            # * Output: 128x128
+            nn.ConvTranspose2d(32, 16, 4, 2, 1, bias=False),
+            norm_layer(16),
+            nn.ReLU(),
+            # * Layer 7: 128x128
+            nn.ConvTranspose2d(16, self.out_ch, 4, 2, 1, bias=False),
+            # * Output Layer 8: 256x256
         )
 
 
