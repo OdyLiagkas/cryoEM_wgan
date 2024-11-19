@@ -113,34 +113,34 @@ class Generator(nn.Module):
         self.z_dim = z_dim
         self.out_ch = out_ch
         self.final_activation = final_activation
-
+        self.fcs = 256 #first channel size
         self.net = nn.Sequential(
             # * Layer 1: 1x1
-            nn.ConvTranspose2d(self.z_dim, 512, 4, 1, 0, bias=False),
-            norm_layer(512),
+            nn.ConvTranspose2d(self.z_dim, self.fcs, 4, 1, 0, bias=False),
+            norm_layer(self.fcs),
             nn.ReLU(),
             # * Layer 2: 4x4
-            nn.ConvTranspose2d(512, 256, 4, 2, 1, bias=False),
-            norm_layer(256),
+            nn.ConvTranspose2d(self.fcs, self.fcs//2, 4, 2, 1, bias=False),
+            norm_layer(self.fcs//2),
             nn.ReLU(),
             # * Layer 3: 8x8
-            nn.ConvTranspose2d(256, 128, 4, 2, 1, bias=False),
-            norm_layer(128),
+            nn.ConvTranspose2d(self.fcs//2, self.fcs//(2**2), 4, 2, 1, bias=False),
+            norm_layer(self.fcs//(2**2)),
             nn.ReLU(),
             # * Layer 4: 16x16
-            nn.ConvTranspose2d(128, 64, 4, 2, 1, bias=False),
-            norm_layer(64),
+            nn.ConvTranspose2d(self.fcs//(2**2), self.fcs//(2**3), 4, 2, 1, bias=False),
+            norm_layer(self.fcs//(2**3)),
             nn.ReLU(),
             # * Layer 5: 32x32
-            nn.ConvTranspose2d(64, 32, 4, 2, 1, bias=False),
-            norm_layer(32),
+            nn.ConvTranspose2d(self.fcs//(2**3), self.fcs//(2**4), 4, 2, 1, bias=False),
+            norm_layer(self.fcs//(2**4)),
             nn.ReLU(),
             # * Layer 6: 64x64
-            nn.ConvTranspose2d(32, 16, 4, 2, 1, bias=False),
-            norm_layer(16),
+            nn.ConvTranspose2d(self.fcs//(2**4), self.fcs//(2**5), 4, 2, 1, bias=False),
+            norm_layer(self.fcs//(2**5)),
             nn.ReLU(),
             # * Layer 7: 128x128
-            nn.ConvTranspose2d(16, self.out_ch, 4, 2, 1, bias=False),
+            nn.ConvTranspose2d(self.fcs//(2**5), self.out_ch, 4, 2, 1, bias=False),
             # * Output Layer 8: 256x256
         )
 
