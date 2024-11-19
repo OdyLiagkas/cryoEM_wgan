@@ -104,6 +104,7 @@ class Generator(nn.Module):
     def __init__(
         self,
         z_dim=100,
+        first_channel_size=256,
         out_ch=3,
         norm_layer=nn.BatchNorm2d,
         final_activation=None,
@@ -113,7 +114,7 @@ class Generator(nn.Module):
         self.z_dim = z_dim
         self.out_ch = out_ch
         self.final_activation = final_activation
-        self.fcs = 512 #first channel size
+        self.fcs = first_channel_size #first channel size
         self.net = nn.Sequential(
             # * Layer 1: 1x1
             nn.ConvTranspose2d(self.z_dim, self.fcs, 4, 1, 0, bias=False),

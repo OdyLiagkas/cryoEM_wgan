@@ -1,0 +1,32 @@
+# config.yaml
+
+# Device settings
+device: "cuda:0"  # If available, otherwise CPU will be used in the script
+
+# Path to dataset
+data_paths:
+  - "/home/azamanos/projects/data/sim_particles/"
+
+# Training parameters
+batch_size: 256
+noise_dim: 100
+first_channel_size: 256
+dim: 16  
+lr: 0.0001
+beta_1: 0.9
+beta_2: 0.99
+img_size: [256, 256, 1]
+epochs: 10000
+print_every: 5000
+standarization: False
+gaussian_filter: 0.025
+critic_iterations: 5
+gp_weight: 10
+checkpoint_dir: 32
+save_checkpoint_every: 2500
+# WandB settings
+wandb:
+  project: "cryoEM-WGAN"
+  architecture: "Wasserstein GAN_from_Zoo"
+  dataset: "10K_Particles"
+  run_id: '32: Zoo_WGAN_10K_epochs_im_shape_256_batch_size_256_gaussian_filter=0.025_normalization_critic_iterations=5_fcs_256'
