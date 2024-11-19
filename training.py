@@ -130,7 +130,7 @@ class Trainer():
             ###
             pl = (256-data.shape[-1])//2
             if pl:
-                data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0)
+                data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
             #Bring data values into -1, 1
             data = 2*(data-0.5)
             #Train discriminator
