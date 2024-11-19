@@ -5,6 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
+import torch.nn.functional as F
 import wandb
 from utils import normalize_array, normalize_tensor, _get_gaussian_weights, gaussian
 import matplotlib.pyplot as plt
@@ -129,8 +130,7 @@ class Trainer():
             ###
             pl = (256-data.shape[-1])//2
             if pl:
-                data = np.pad(data[None, None], ((0,0),(0,0),(pl,pl),(pl,pl)))
-            data = np.pad(data, )
+                data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0)
             #Bring data values into -1, 1
             data = 2*(data-0.5)
             #Train discriminator
