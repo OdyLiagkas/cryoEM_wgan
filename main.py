@@ -54,7 +54,7 @@ def main(config):
     # Initialize Generator and Discriminator
     generator = Generator(z_dim=noise_dim,
             out_ch=1,#for grayscale
-            first_channel_size = config['first_channel_size']
+            first_channel_size = config['first_channel_size'],
             norm_layer=LayerNorm2d,
             final_activation=torch.tanh
             )
