@@ -19,6 +19,7 @@ epochs: 10
 print_every: 5000
 standarization: False
 gaussian_filter: 0.025
+first_channel_size: 256
 critic_iterations: 5
 gp_weight: 10
 checkpoint_dir: 2025_1
