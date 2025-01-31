@@ -74,7 +74,7 @@ def main(config):
     latent_code_size = torch.prod(torch.tensor(cnn_encoder_out_shape)) 
 #-------------------NEW===============================
 
-    discriminator = Discriminator(1, norm_layer=LayerNorm2d)
+    discriminator = Discriminator(latent_code_size , norm_layer=LayerNorm2d)
 
     #ADDED weight initialization as per the zoo gan file:
     generator.apply(init_weight)
