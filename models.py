@@ -4,6 +4,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+import time
+
 #====================================================================old=================================================================
 class Generator_(nn.Module):
     def __init__(self, img_size, latent_dim, dim):
@@ -209,7 +211,10 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
         batch_size = x.shape[0]
+        print(time.time())
         x = self.gaussian_filters(x)
+        print(x.shape)
+        print(time.time())
         x = self.net(x)
         #print(x.shape)
         x = x.view(batch_size, -1)
