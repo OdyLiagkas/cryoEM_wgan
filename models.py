@@ -211,10 +211,11 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
         batch_size = x.shape[0]
-        print(time.time())
+        st = time.time()
+        print(time.time()-st)
         x = self.gaussian_filters(x)
         print(x.shape)
-        print(time.time())
+        print(time.time()-st)
         x = self.net(x)
         #print(x.shape)
         x = x.view(batch_size, -1)
