@@ -15,6 +15,11 @@ import numpy as np
 from utils import LayerNorm2d, PixelNorm # FOR ZOO WGANgp
 from utils import init_weight 
 
+
+# TO GET LATENT_CODE_SIZE
+from encoders import CNNEncoderVGG16
+
+
 # Function to load config from YAML file
 def load_config(yaml_file):
     with open(yaml_file, 'r') as file:
@@ -60,9 +65,16 @@ def main(config):
             )
 
     side_len = config['side_len']
-    octave_num = config['octave_num']
-    
-    discriminator = Discriminator(1, norm_layer=LayerNorm2d, sidelen=side_len, num_octaves=octave_num)
+    octave_num = config['octave_num'] 
+
+    num_additional_channels = num_octaves
+#------------------NEW===============================
+    cnn_encoder = CNNEncoderVGG16(1 + num_additional_channels,batch_norm=True)
+    cnn_encoder_out_shape = self.cnn_encoder.get_out_shape(sidelen, sidelen)
+    latent_code_size = torch.prod(torch.tensor(cnn_encoder_out_shape)) 
+#-------------------NEW===============================
+
+    discriminator = Discriminator(1, norm_layer=LayerNorm2d)
 
     #ADDED weight initialization as per the zoo gan file:
     generator.apply(init_weight)
