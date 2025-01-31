@@ -213,6 +213,7 @@ class Discriminator(nn.Module):
         batch_size = x.shape[0]
         print("SETTING TIME\n")
         st = time.time()
+        print(st)
         x = self.gaussian_filters(x)
         print(x.shape)
         print(time.time()-st)
