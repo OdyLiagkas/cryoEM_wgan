@@ -117,7 +117,7 @@ class Generator(nn.Module):
         self.final_activation = final_activation
         self.fcs = first_channel_size #first channel size
 
-            )
+        
         self.net = nn.Sequential(
             # * Layer 1: 1x1
             nn.ConvTranspose2d(self.z_dim, self.fcs, 4, 1, 0, bias=False),
