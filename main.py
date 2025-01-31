@@ -75,7 +75,7 @@ def main(config):
             final_activation=torch.tanh
             )
 
-    DiscriminatorNoPyramid(1, norm_layer=LayerNorm2d)
+    discriminator = DiscriminatorNoPyramid(1, norm_layer=LayerNorm2d)
     #discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
     #discriminator = DiscriminatorEncoder()    also commented the import
 
