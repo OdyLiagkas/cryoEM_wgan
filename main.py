@@ -58,7 +58,7 @@ def main(config):
 
     # Initialize Generator and Discriminator
 
-    side_len = config['side_len']
+    sidelen = config['side_len']
     num_octaves = config['octave_num'] 
 
     num_additional_channels = num_octaves
