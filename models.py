@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-
+#====================================================================old=================================================================
 class Generator_(nn.Module):
     def __init__(self, img_size, latent_dim, dim):
         super(Generator, self).__init__()
@@ -91,7 +91,7 @@ class Discriminator_(nn.Module):
         x = x.view(batch_size, -1)
         return self.features_to_prob(x)
 
-
+#====================================================================end_of_old=================================================================
 
 
 from collections import OrderedDict
@@ -105,7 +105,7 @@ class Generator(nn.Module):
         self,
         z_dim=100,
         first_channel_size=256,
-        out_ch=3,
+        out_ch=1,                       #CHANGED TO 1 from 3
         norm_layer=nn.BatchNorm2d,
         final_activation=None,
         
@@ -147,6 +147,115 @@ class Generator(nn.Module):
 
 
     def forward(self, x):
+        x = self.net(x)
+        return (
+            x if self.final_activation is None else self.final_activation(x)
+        )
+    
+    def sample_latent(self, num_samples):
+        return torch.randn((num_samples, self.z_dim, 1, 1))
+
+class Discriminator(nn.Module):
+    def __init__(
+        self, in_ch=1, norm_layer=nn.BatchNorm2d, final_activation=None   #CHANGED IN_CH to 1 from 3
+    ):
+        super().__init__()
+        self.in_ch = in_ch
+        self.final_activation = final_activation
+      
+        
+        self.net = nn.Sequential(
+            # * 128x128
+            nn.Conv2d(self.in_ch, 32, 4, 2, 1, bias=False),
+            nn.LeakyReLU(0.2),
+            # * 64x64
+            nn.Conv2d(32, 64, 4, 2, 1, bias=False),
+            norm_layer(64, affine=True),
+            nn.LeakyReLU(0.2),
+            # * 32x32
+            nn.Conv2d(64, 128, 4, 2, 1, bias=False),
+            norm_layer(128, affine=True),
+            nn.LeakyReLU(0.2),
+            # * 16x16
+            nn.Conv2d(128, 256, 4, 2, 1, bias=False),
+            norm_layer(256, affine=True),
+            nn.LeakyReLU(0.2),
+            # * 8x8
+            nn.Conv2d(256, 512, 4, 2, 1, bias=False),
+            norm_layer(512, affine=True),
+            nn.LeakyReLU(0.2),
+            # * 4x4
+            nn.Conv2d(512, 1, 4, 1, 0, bias=False),
+        )
+
+        self.features_to_prob = nn.Sequential(
+            #nn.Linear(4, 1),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        batch_size = x.shape[0]
+        x = self.net(x)
+        #print(x.shape)
+        x = x.view(batch_size, -1)
+        #print(x.shape)
+        return self.features_to_prob(x)
+    
+''' PREVIOUS ONES that we used
+from collections import OrderedDict
+
+class Generator(nn.Module):
+    """
+    NetG DCGAN Generator. Outputs 64x64 images.
+    """
+
+    def __init__(
+        self,
+        z_dim=100,
+        out_ch=3,
+        norm_layer=nn.BatchNorm2d,
+        final_activation=None,
+        wscale = 1
+    ):
+        super().__init__()
+        self.z_dim = z_dim
+        self.out_ch = out_ch
+        self.final_activation = final_activation
+        self.wscale = wscale
+
+        self.net = nn.Sequential(
+            # * Layer 1: 1x1
+            nn.ConvTranspose2d(self.z_dim, 512, 4, 1, 0, bias=False),
+            norm_layer(512),
+            nn.ReLU(),
+            # * Layer 2: 4x4
+            nn.ConvTranspose2d(512, 256, 4, 2, 1, bias=False),
+            norm_layer(256),
+            nn.ReLU(),
+            # * Layer 3: 8x8
+            nn.ConvTranspose2d(256, 128, 4, 2, 1, bias=False),
+            norm_layer(128),
+            nn.ReLU(),
+            # * Layer 4: 16x16
+            nn.ConvTranspose2d(128, 64, 4, 2, 1, bias=False),
+            norm_layer(64),
+            nn.ReLU(),
+            # * Layer 5: 32x32
+            nn.ConvTranspose2d(64, 32, 4, 2, 1, bias=False),
+            norm_layer(32),
+            nn.ReLU(),
+            # * Layer 6: 64x64
+            nn.ConvTranspose2d(32, self.out_ch, 4, 2, 1, bias=False),
+            # * Output: 128x128
+        )
+
+        if self.wscale-1:
+            self.wscale = self.wscale/np.sqrt(4 * 4 * self.z_dim)
+
+    def forward(self, x):
+        #Scale first layers
+        self.net[0].weight = nn.Parameter(self.net[0].weight*self.wscale)
+
         x = self.net(x)
         return (
             x if self.final_activation is None else self.final_activation(x)
@@ -200,3 +309,4 @@ class Discriminator(nn.Module):
         #print(x.shape)
         return self.features_to_prob(x)
     
+'''
