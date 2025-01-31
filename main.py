@@ -58,8 +58,11 @@ def main(config):
             norm_layer=LayerNorm2d,
             final_activation=torch.tanh
             )
+
+    side_len = config['side_len']
+    octave_num = config['octave_num']
     
-    discriminator = Discriminator(1, norm_layer=LayerNorm2d)
+    discriminator = Discriminator(1, norm_layer=LayerNorm2d, sidelen=side_len, num_octaves=octave_num)
 
     #ADDED weight initialization as per the zoo gan file:
     generator.apply(init_weight)
