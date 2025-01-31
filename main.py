@@ -57,12 +57,6 @@ def main(config):
     data_loader = get_dataloader(paths_to_data=data_paths, batch_size=batch_size, standarization=config['standarization'])
 
     # Initialize Generator and Discriminator
-    generator = Generator(z_dim=noise_dim,
-            out_ch=1,#for grayscale
-            first_channel_size = config['first_channel_size'],
-            norm_layer=LayerNorm2d,
-            final_activation=torch.tanh
-            )
 
     side_len = config['side_len']
     octave_num = config['octave_num'] 
@@ -73,7 +67,15 @@ def main(config):
     cnn_encoder_out_shape = self.cnn_encoder.get_out_shape(sidelen, sidelen)
     latent_code_size = torch.prod(torch.tensor(cnn_encoder_out_shape)) 
 #-------------------NEW===============================
+    
+    generator = Generator(z_dim=noise_dim,
+            out_ch=latent_code_size,#for grayscale
+            first_channel_size = config['first_channel_size'],
+            norm_layer=LayerNorm2d,
+            final_activation=torch.tanh
+            )
 
+    
     discriminator = Discriminator(latent_code_size , norm_layer=LayerNorm2d)
 
     #ADDED weight initialization as per the zoo gan file:
