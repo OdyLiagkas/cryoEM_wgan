@@ -25,8 +25,8 @@ gp_weight: 10
 checkpoint_dir: 2025_1
 save_checkpoint_every: 2500
 
-side_len : 200
-octave_num : 4
+side_len: 200
+octave_num: 4
 
 # WandB settings
 wandb:
