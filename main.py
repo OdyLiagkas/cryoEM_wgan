@@ -2,7 +2,7 @@ import os
 import torch
 import torch.optim as optim
 from dataloaders import get_dataloader
-from models import Generator, DiscriminatorNoPyramid#, DiscriminatorEncoder
+from models import Generator, Discriminator, DiscriminatorEncoder
 from training import Trainer
 import wandb
 import matplotlib.pyplot as plt
@@ -75,8 +75,8 @@ def main(config):
             final_activation=torch.tanh
             )
 
-    discriminator = DiscriminatorNoPyramid(1, norm_layer=LayerNorm2d)
-    #discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
+    #discriminator = DiscriminatorNoPyramid(1, norm_layer=LayerNorm2d)
+    discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
     #discriminator = DiscriminatorEncoder()    also commented the import
 
     #ADDED weight initialization as per the zoo gan file:
