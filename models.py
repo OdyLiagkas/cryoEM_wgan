@@ -160,7 +160,7 @@ class Generator(nn.Module):
         return torch.randn((num_samples, self.z_dim, 1, 1))
 
 # for cryospin
-from encoders import CNNEncoderVGG16, GaussianPyramid
+from encoders import GaussianPyramid
 
 class Discriminator(nn.Module):
     def __init__(
@@ -215,7 +215,41 @@ class Discriminator(nn.Module):
         x = x.view(batch_size, -1)
         #print(x.shape)
         return self.features_to_prob(x)
-    
+
+from encoders import CNNEncoderVGG16
+class DiscriminatorEncoder(nn.Module):
+    def __init__(
+        self, in_ch=1, norm_layer=nn.BatchNorm2d, final_activation=None, num_octaves=4   #CHANGED IN_CH to 1 from 3
+    ):
+        super().__init__()
+        self.in_ch = in_ch
+        self.final_activation = final_activation
+        self.num_octaves = num_octaves
+        self.gaussian_filters = GaussianPyramid(
+                kernel_size=11,
+                kernel_variance=0.01,
+                num_octaves=num_octaves,
+                octave_scaling=10
+            )
+      
+        
+        self.net = CNNEncoderVGG16(1 + num_octaves , batch_norm = True)
+
+        self.features_to_prob = nn.Sequential(
+            #nn.Linear(4, 1),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        batch_size = x.shape[0]
+        x = self.gaussian_filters(x)
+        x = self.net(x)
+        #print(x.shape)
+        x = x.view(batch_size, -1)
+        #print(x.shape)
+        return self.features_to_prob(x)
+
+
 ''' PREVIOUS ONES that we used
 from collections import OrderedDict
 
