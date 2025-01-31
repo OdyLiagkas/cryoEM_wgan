@@ -64,7 +64,7 @@ def main(config):
     num_additional_channels = num_octaves
 #------------------NEW===============================
     cnn_encoder = CNNEncoderVGG16(1 + num_additional_channels,batch_norm=True)
-    cnn_encoder_out_shape = self.cnn_encoder.get_out_shape(sidelen, sidelen)
+    cnn_encoder_out_shape = cnn_encoder.get_out_shape(sidelen, sidelen)
     latent_code_size = torch.prod(torch.tensor(cnn_encoder_out_shape)) 
 #-------------------NEW===============================
     
