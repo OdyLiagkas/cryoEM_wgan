@@ -92,7 +92,7 @@ class Discriminator_(nn.Module):
         return self.features_to_prob(x)
 
 #====================================================================end_of_old=================================================================
-
+#NEW WITH GAUSSIAN FILTERS AND num_octaves
 
 from collections import OrderedDict
 
@@ -106,6 +106,7 @@ class Generator(nn.Module):
         z_dim=100,
         first_channel_size=256,
         out_ch=1,                       #CHANGED TO 1 from 3
+
         norm_layer=nn.BatchNorm2d,
         final_activation=None,
         
@@ -115,6 +116,8 @@ class Generator(nn.Module):
         self.out_ch = out_ch
         self.final_activation = final_activation
         self.fcs = first_channel_size #first channel size
+
+            )
         self.net = nn.Sequential(
             # * Layer 1: 1x1
             nn.ConvTranspose2d(self.z_dim, self.fcs, 4, 1, 0, bias=False),
@@ -148,6 +151,7 @@ class Generator(nn.Module):
 
     def forward(self, x):
         x = self.net(x)
+  
         return (
             x if self.final_activation is None else self.final_activation(x)
         )
@@ -155,13 +159,23 @@ class Generator(nn.Module):
     def sample_latent(self, num_samples):
         return torch.randn((num_samples, self.z_dim, 1, 1))
 
+# for cryospin
+from encoders import CNNEncoderVGG16, GaussianPyramid
+
 class Discriminator(nn.Module):
     def __init__(
-        self, in_ch=1, norm_layer=nn.BatchNorm2d, final_activation=None   #CHANGED IN_CH to 1 from 3
+        self, in_ch=1, norm_layer=nn.BatchNorm2d, final_activation=None, num_octaves=4   #CHANGED IN_CH to 1 from 3
     ):
         super().__init__()
         self.in_ch = in_ch
         self.final_activation = final_activation
+        self.num_octaves = num_octaves
+        self.gaussian_filters = GaussianPyramid(
+                kernel_size=11,
+                kernel_variance=0.01,
+                num_octaves=num_octaves,
+                octave_scaling=10
+            )
       
         
         self.net = nn.Sequential(
@@ -195,6 +209,7 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
         batch_size = x.shape[0]
+        x = self.gaussian_filters(x)
         x = self.net(x)
         #print(x.shape)
         x = x.view(batch_size, -1)
