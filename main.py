@@ -2,7 +2,7 @@ import os
 import torch
 import torch.optim as optim
 from dataloaders import get_dataloader
-from models import Generator, Discriminator, DiscriminatorEncoder
+from models import Generator, Discriminator
 from training import Trainer
 import wandb
 import matplotlib.pyplot as plt
