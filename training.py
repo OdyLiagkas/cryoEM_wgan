@@ -48,7 +48,7 @@ class Trainer():
         generated_data = self.sample_generator(batch_size)
         #print("TIME IT TOOK TO DO .sample_generator:",time.time()-stc)
         #print("GENERATED_DATA_SHAPE: ",generated_data.shape)    #print generated data shape
-        data = data.to(self.device)
+        data = data.to(dtype=torch.float32, device=self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
 
