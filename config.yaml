@@ -15,7 +15,7 @@ lr: 0.0001
 beta_1: 0.9
 beta_2: 0.99
 img_size: [256, 256, 1]
-epochs: 101
+epochs: 10001
 print_every: 5000
 standarization: False
 gaussian_filter: 0
@@ -33,4 +33,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN with cryospin gaussian spin"
   dataset: "10K_Particles"
-  run_id: 'TEST WITH PYRAMID 2025_#2_DiscriminatorEncoder_cryospin_gaussian_pyramid_10K_epochs_im_shape_256_batch_size_32_gaussian_filter=0.025_normalization_critic_iterations=5'
+  run_id: '2025_#3_10k epochs_with_cryospin_gaussian_pyramid_10K_epochs_im_shape_256_batch_size_32_gaussian_filter=0.025_normalization_critic_iterations=5'
