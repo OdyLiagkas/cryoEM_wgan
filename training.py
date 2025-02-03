@@ -43,10 +43,10 @@ class Trainer():
         self.D.train()
         """Train the discriminator."""
         batch_size = data.size(0)
-        stc = time.time()######set time!
+        #stc = time.time()######set time!
         generated_data = self.sample_generator(batch_size)
-        print("TIME IT TOOK TO DO .sample_generator:",time.time()-stc)
-        print("GENERATED_DATA_SHAPE: ",generated_data.shape)    #print generated data shape
+        #print("TIME IT TOOK TO DO .sample_generator:",time.time()-stc)
+        #print("GENERATED_DATA_SHAPE: ",generated_data.shape)    #print generated data shape
         #data = data.to(self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
@@ -129,13 +129,13 @@ class Trainer():
             #Standarize data
             if self.normalize:
                 data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
-            print("SHAPE OF DATA BEFORE THE PAD:", data.shape)   ###print shape
-            st = time.time()         ##########set time
+            #print("SHAPE OF DATA BEFORE THE PAD:", data.shape)   ###print shape
+            #st = time.time()         ##########set time
             pl = (256-data.shape[-1])//2
             if pl:
                 data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
-            print("SHAPE OF DATA AFTER THE PAD:", data.shape)   ###print shape    
-            print("TIME IT TOOK TO DO the padding:",time.time()-st)   #####print time
+            #print("SHAPE OF DATA AFTER THE PAD:", data.shape)   ###print shape    
+            #print("TIME IT TOOK TO DO the padding:",time.time()-st)   #####print time
             #####################################################################################data = 2*(data-0.5)
             #Train discriminator
             self._critic_train_iteration(data)
