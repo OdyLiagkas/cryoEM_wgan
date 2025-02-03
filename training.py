@@ -132,9 +132,11 @@ class Trainer():
                 data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
             #print("SHAPE OF DATA BEFORE THE PAD:", data.shape)   ###print shape
             #st = time.time()         ##########set time
+            '''
             pl = (256-data.shape[-1])//2
             if pl:
                 data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
+            '''
             #print("SHAPE OF DATA AFTER THE PAD:", data.shape)   ###print shape    
             #print("TIME IT TOOK TO DO the padding:",time.time()-st)   #####print time
             #####################################################################################data = 2*(data-0.5)
@@ -247,6 +249,7 @@ class Trainer():
         latent_samples = self.G.sample_latent(num_samples)
         latent_samples = latent_samples.to(self.device)
         generated_data = self.G(latent_samples)
+        generated_data = generated_data[:, :, pl:pl+200, pl:pl+200]  # Crops to 200x200
         return generated_data
 
     def sample(self, num_samples, sampling=False):
