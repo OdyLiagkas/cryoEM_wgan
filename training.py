@@ -22,6 +22,7 @@ class Trainer():
         self.losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}
         self.epoch_losses = {'G': [], 'D': [], 'GP': [], 'gradient_norm': []}  # Track losses for each epoch
         self.num_steps = 0
+        self.pl = 28    #for the images to go from 256x256 to 200x200
         self.device = device
         self.epoch100 = epoch100
         self.gp_weight = gp_weight
@@ -132,7 +133,6 @@ class Trainer():
             #print("SHAPE OF DATA BEFORE THE PAD:", data.shape)   ###print shape
             #st = time.time()         ##########set time
             pl = (256-data.shape[-1])//2
-            print("PL's VALUE:",pl)
             if pl:
                 data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
             #print("SHAPE OF DATA AFTER THE PAD:", data.shape)   ###print shape    
