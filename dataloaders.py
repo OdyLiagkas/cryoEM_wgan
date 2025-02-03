@@ -25,6 +25,8 @@ class CustomImageDataset(Dataset):
             #if self.normalize_for_tanh:
                 #image = (image - 0.5) * 2  # Convert [0, 1] to [-1, 1]
 
+            image = (image - image.mean())/ image.std()  # added standardization per image!!!  
+
             self.particles.append(np.array(image))
         
         self.particles = np.array(self.particles)
