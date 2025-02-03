@@ -47,7 +47,7 @@ class Trainer():
         generated_data = self.sample_generator(batch_size)
         #print("TIME IT TOOK TO DO .sample_generator:",time.time()-stc)
         #print("GENERATED_DATA_SHAPE: ",generated_data.shape)    #print generated data shape
-        data = data.to(self.device)
+        #data = data.to(self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
 
@@ -132,6 +132,7 @@ class Trainer():
             #print("SHAPE OF DATA BEFORE THE PAD:", data.shape)   ###print shape
             #st = time.time()         ##########set time
             pl = (256-data.shape[-1])//2
+            print("PL's VALUE:",pl)
             if pl:
                 data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
             #print("SHAPE OF DATA AFTER THE PAD:", data.shape)   ###print shape    
