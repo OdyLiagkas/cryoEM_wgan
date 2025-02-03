@@ -43,8 +43,10 @@ class Trainer():
         self.D.train()
         """Train the discriminator."""
         batch_size = data.size(0)
+        stc = time.time()######set time!
         generated_data = self.sample_generator(batch_size)
-
+        print("TIME IT TOOK TO DO .sample_generator:",time.time()-stc)
+        print("GENERATED_DATA_SHAPE: ",generated_data.shape)    #print generated data shape
         #data = data.to(self.device)
         d_real = self.D(data)
         d_generated = self.D(generated_data)
@@ -127,12 +129,13 @@ class Trainer():
             #Standarize data
             if self.normalize:
                 data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
-            ###
+            st = time.time()         ##########set time
             pl = (256-data.shape[-1])//2
+            print(pl.shape)   ###print shape
             if pl:
                 data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
-            #Bring data values into -1, 1
-            data = 2*(data-0.5)
+            print("TIME IT TOOK TO DO the padding:",time.time()-st)   #####print time
+            #####################################################################################data = 2*(data-0.5)
             #Train discriminator
             self._critic_train_iteration(data)
             #Train generator
@@ -144,7 +147,7 @@ class Trainer():
                       f"Gradient norm: {self.losses['gradient_norm'][-1]}")
                 if self.num_steps > self.critic_iterations:
                     print(f"G: {self.losses['G'][-1]}")
-
+            
         '''   REMOVED PLOTTING EVERY EPOCH 
         num_samples = 1   # CAN BE CHANGED TO BE A PARAMETER 
         generated_image = self.sample(num_samples=num_samples, sampling=True)
