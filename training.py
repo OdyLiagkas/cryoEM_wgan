@@ -249,7 +249,7 @@ class Trainer():
         latent_samples = self.G.sample_latent(num_samples)
         latent_samples = latent_samples.to(self.device)
         generated_data = self.G(latent_samples)
-        generated_data = generated_data[:, :, pl:pl+200, pl:pl+200]  # Crops to 200x200
+        generated_data = generated_data[:, :, self.pl:self.pl+200, self.pl:self.pl+200]  # Crops to 200x200
         return generated_data
 
     def sample(self, num_samples, sampling=False):
