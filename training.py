@@ -129,11 +129,12 @@ class Trainer():
             #Standarize data
             if self.normalize:
                 data = normalize_tensor(data)#self.batch_standarization(data)#normalize_tensor(data)
+            print("SHAPE OF DATA BEFORE THE PAD:", data.shape)   ###print shape
             st = time.time()         ##########set time
             pl = (256-data.shape[-1])//2
-            print(pl.shape)   ###print shape
             if pl:
                 data = F.pad(data, (pl, pl, pl, pl), mode='constant', value=0).float()
+            print("SHAPE OF DATA AFTER THE PAD:", data.shape)   ###print shape    
             print("TIME IT TOOK TO DO the padding:",time.time()-st)   #####print time
             #####################################################################################data = 2*(data-0.5)
             #Train discriminator
