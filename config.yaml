@@ -22,7 +22,7 @@ gaussian_filter: 0
 first_channel_size: 256
 critic_iterations: 5
 gp_weight: 10
-checkpoint_dir: 2025_2
+checkpoint_dir: 2025_3
 save_checkpoint_every: 2500
 
 side_len: 200
@@ -33,4 +33,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN with cryospin gaussian spin"
   dataset: "10K_Particles"
-  run_id: '#2_noPadding_yesCROPPING_10k epochs_with_cryospin_gaussian_pyramid_im_shape_200_batch_size_32_gaussian_filter=0_perImageStandardization_critic_iterations=5'
+  run_id: '#3_VGG16_noPadding_yesCROPPING_10k epochs_with_cryospin_gaussian_pyramid_im_shape_200_batch_size_32_gaussian_filter=0_perImageStandardization_critic_iterations=5'
