@@ -33,4 +33,4 @@ wandb:
   project: "cryoEM-WGAN"
   architecture: "Wasserstein GAN with cryospin gaussian spin"
   dataset: "10K_Particles"
-  run_id: 'Gaussian_Filter_original_Discriminator_noPadding_yesCROPPING_10k epochs_with_cryospin_gaussian_pyramid_im_shape_200_batch_size_32_gaussian_filter=0.025_perImageStandardization_critic_iterations=5'
+  run_id: 'Gaussian_Filter_original_Discriminator_noPadding_yesCROPPING_10k epochs_with_OUT_cryospin_gaussian_pyramid_im_shape_200_batch_size_32_gaussian_filter=0.025_perImageStandardization_critic_iterations=5'
