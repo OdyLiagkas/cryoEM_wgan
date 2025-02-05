@@ -63,9 +63,9 @@ def main(config):
 
     num_additional_channels = num_octaves
 #------------------NEW===============================
-    cnn_encoder = CNNEncoderVGG16(1 + num_additional_channels,batch_norm=True)
-    cnn_encoder_out_shape = cnn_encoder.get_out_shape(sidelen, sidelen)
-    latent_code_size = torch.prod(torch.tensor(cnn_encoder_out_shape)) 
+    #cnn_encoder = CNNEncoderVGG16(1 + num_additional_channels,batch_norm=True)
+    #cnn_encoder_out_shape = cnn_encoder.get_out_shape(sidelen, sidelen)
+    #latent_code_size = torch.prod(torch.tensor(cnn_encoder_out_shape)) 
 #-------------------NEW===============================
     
     generator = Generator(z_dim=noise_dim,
@@ -76,8 +76,8 @@ def main(config):
             )
 
     #discriminator = DiscriminatorNoPyramid(1, norm_layer=LayerNorm2d)
-    #discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
-    discriminator = DiscriminatorEncoder()    
+        discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
+    #discriminator = DiscriminatorEncoder()    
 
     #ADDED weight initialization as per the zoo gan file:
     generator.apply(init_weight)
