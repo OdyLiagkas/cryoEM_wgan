@@ -76,7 +76,7 @@ def main(config):
             )
 
     #discriminator = DiscriminatorNoPyramid(1, norm_layer=LayerNorm2d)
-        discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
+    discriminator = Discriminator(5 , norm_layer=LayerNorm2d)    # Changed to 5 to match the output of The gaussian pyramid
     #discriminator = DiscriminatorEncoder()    
 
     #ADDED weight initialization as per the zoo gan file:
