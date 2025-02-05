@@ -1,0 +1,36 @@
+# config.yaml
+
+# Device settings
+device: "cuda:0"  # If available, otherwise CPU will be used in the script
+
+# Path to dataset
+data_paths:
+  - "../pngs/"
+
+# Training parameters
+batch_size: 32
+noise_dim: 100
+dim: 16  
+lr: 0.0001
+beta_1: 0.9
+beta_2: 0.99
+img_size: [256, 256, 1]
+epochs: 10001
+print_every: 5000
+standarization: False
+gaussian_filter: 0
+first_channel_size: 256
+critic_iterations: 5
+gp_weight: 10
+checkpoint_dir: 2025_3
+save_checkpoint_every: 2500
+
+side_len: 200
+octave_num: 4
+
+# WandB settings
+wandb:
+  project: "cryoEM-WGAN"
+  architecture: "Wasserstein GAN with cryospin gaussian spin"
+  dataset: "10K_Particles"
+  run_id: '#3_VGG16_noPadding_yesCROPPING_10k epochs_with_cryospin_gaussian_pyramid_im_shape_200_batch_size_32_gaussian_filter=0_perImageStandardization_critic_iterations=5'
